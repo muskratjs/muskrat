@@ -1,0 +1,19 @@
+{
+  "name": "swagger-spec-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Igor Ognichenko",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cli": "^0.11.19",
+    "cli": "^1.0.1",
+    "typescript": "^2.8.3"
+  },
+  "devDependencies": {
+    "ts-node": "^6.0.3"
+  }
+}
