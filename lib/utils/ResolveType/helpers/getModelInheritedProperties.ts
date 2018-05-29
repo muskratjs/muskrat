@@ -1,7 +1,7 @@
-import * as ts from "typescript";
-import {UsableDeclaration} from "../ResolveType";
-import {ResolveReference} from "../ResolveReference";
-import {SGMetadata} from "../../../model/SGMetadata";
+import * as ts from 'typescript';
+import {UsableDeclaration} from '../ResolveType';
+import {ResolveReference} from '../ResolveReference';
+import {SGMetadata} from '../../../model/SGMetadata';
 
 export function getModelInheritedProperties(modelTypeDeclaration: UsableDeclaration): SGMetadata.Property[] {
     const properties = [] as SGMetadata.Property[];

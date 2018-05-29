@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export function resolveModelTypeScope(leftmost: ts.EntityName, statements: any): any[] {
     while (leftmost.parent && leftmost.parent.kind === ts.SyntaxKind.QualifiedName) {

@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {ResolveType} from "../ResolveType";
+import * as ts from 'typescript';
+import {ResolveType} from '../ResolveType';
 
 export class LiteralType {
     static resolve(typeName: ts.EntityName) {
@@ -26,6 +26,6 @@ export class LiteralType {
         return {
             dataType: 'enum',
             enums: unionTypes.map((unionNode: any) => unionNode.literal.text as string),
-        }
+        };
     }
 }

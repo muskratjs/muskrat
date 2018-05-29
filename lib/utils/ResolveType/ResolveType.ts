@@ -1,10 +1,10 @@
-import {values} from "lodash";
-import * as ts from "typescript";
-import * as typesResolvers from "./type";
-import * as typeNamesResolvers from "./typeName";
-import * as typeReferenceResolvers from "./typeReference";
-import {ResolveReference} from "./ResolveReference";
-import {getPrimitiveType} from "./helpers";
+import {values} from 'lodash';
+import * as ts from 'typescript';
+import * as typesResolvers from './type';
+import * as typeNamesResolvers from './typeName';
+import * as typeReferenceResolvers from './typeReference';
+import {ResolveReference} from './ResolveReference';
+import {getPrimitiveType} from './helpers';
 
 export type UsableDeclaration = ts.InterfaceDeclaration
     | ts.ClassDeclaration

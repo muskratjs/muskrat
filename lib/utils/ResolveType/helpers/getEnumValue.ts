@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export function getEnumValue(member: ts.EnumMember | any) {
     const initializer = member.initializer;

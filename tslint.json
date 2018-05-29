@@ -12,7 +12,7 @@
       "spaces"
     ],
     "interface-name": [
-      true
+      false
     ],
     "jsdoc-format": true,
     "label-position": true,

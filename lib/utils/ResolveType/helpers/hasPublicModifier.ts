@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export function hasPublicModifier(node: ts.Node) {
     return !node.modifiers || node.modifiers.every((modifier) => {

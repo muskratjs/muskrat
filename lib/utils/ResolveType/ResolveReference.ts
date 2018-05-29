@@ -1,12 +1,12 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
-import {EnumerateType} from "./typeReference";
-import {getModelTypeDeclaration, getTypeName, resolveFqTypeName} from "./helpers";
-import {getModelProperties} from "./helpers/getModelProperties";
-import {getNodeDescription} from "./helpers/getNodeDescription";
-import {getModelAdditionalProperties} from "./helpers/getModelAdditionalProperties";
-import {getModelInheritedProperties} from "./helpers/getModelInheritedProperties";
-import {SGMetadata} from "../../model/SGMetadata";
+import {EnumerateType} from './typeReference';
+import {getModelTypeDeclaration, getTypeName, resolveFqTypeName} from './helpers';
+import {getModelProperties} from './helpers/getModelProperties';
+import {getNodeDescription} from './helpers/getNodeDescription';
+import {getModelAdditionalProperties} from './helpers/getModelAdditionalProperties';
+import {getModelInheritedProperties} from './helpers/getModelInheritedProperties';
+import {SGMetadata} from '../../model/SGMetadata';
 
 // TODO: replace any to reference type
 const localReferenceTypeCache: { [typeName: string]: any } = {};
@@ -37,7 +37,7 @@ export class ResolveReference {
 
             if (inProgressTypes[refNameWithGenerics]) {
                 // TODO: CircularDependencyResolver
-                console.error('CircularDependencyResolver')
+                console.error('CircularDependencyResolver');
             }
 
             inProgressTypes[refNameWithGenerics] = true;

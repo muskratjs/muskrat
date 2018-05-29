@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {ResolveType} from "../ResolveType";
+import * as ts from 'typescript';
+import {ResolveType} from '../ResolveType';
 
 export class ArrayType {
     static isSupport(typeReference: ts.TypeReferenceNode) {
@@ -14,6 +14,6 @@ export class ArrayType {
         return {
             dataType: 'array',
             elementType: ResolveType.resolve(typeReference.typeArguments[0]),
-        }
+        };
     }
 }

@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {getPrimitiveType} from "./getPrimitiveType";
+import * as ts from 'typescript';
+import {getPrimitiveType} from './getPrimitiveType';
 
 export function getAnyTypeName(typeNode: ts.TypeNode): string {
     const primitiveType = getPrimitiveType(typeNode);

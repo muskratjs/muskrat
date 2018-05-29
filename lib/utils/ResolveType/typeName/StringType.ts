@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export class StringType {
     static isSupport(typeReference: ts.TypeReferenceNode) {
@@ -8,6 +8,6 @@ export class StringType {
     }
 
     static resolve(typeReference: ts.TypeReferenceNode) {
-        return { dataType: 'string' }
+        return { dataType: 'string' };
     }
 }

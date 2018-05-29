@@ -1,6 +1,6 @@
-import * as ts from "typescript";
-import {getEnumValue, nodeDescription} from "../helpers";
-import {ResolveType} from "../ResolveType";
+import * as ts from 'typescript';
+import {getEnumValue, nodeDescription} from '../helpers';
+import {ResolveType} from '../ResolveType';
 
 export class EnumerateType {
     static resolve(typeName: ts.EntityName) {

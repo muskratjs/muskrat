@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export class BufferType {
     static isSupport(typeReference: ts.TypeReferenceNode) {
@@ -8,6 +8,6 @@ export class BufferType {
     }
 
     static resolve(typeReference: ts.TypeReferenceNode) {
-        return { dataType: 'buffer' }
+        return { dataType: 'buffer' };
     }
 }

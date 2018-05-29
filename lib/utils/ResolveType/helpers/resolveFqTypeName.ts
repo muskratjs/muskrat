@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export function resolveFqTypeName(type: ts.EntityName): string {
     if (type.kind === ts.SyntaxKind.Identifier) {

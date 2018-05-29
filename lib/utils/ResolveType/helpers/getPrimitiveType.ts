@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 const primitiveTypeMap: { [kind: number]: string } = {
     [ts.SyntaxKind.NumberKeyword]: 'number',

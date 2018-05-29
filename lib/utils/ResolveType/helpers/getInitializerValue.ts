@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {SGMetadata} from "../../../model/SGMetadata";
+import * as ts from 'typescript';
+import {SGMetadata} from '../../../model/SGMetadata';
 
 export function getInitializerValue(initializer?: ts.Expression, type?: SGMetadata.Type): any {
     if (!initializer) {

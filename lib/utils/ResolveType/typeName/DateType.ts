@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export class DateType {
     static isSupport(typeReference: ts.TypeReferenceNode) {
@@ -8,6 +8,6 @@ export class DateType {
     }
 
     static resolve(typeReference: ts.TypeReferenceNode) {
-        return { dataType: 'datetime' }
+        return { dataType: 'datetime' };
     }
 }

@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {ResolveType, UsableDeclaration} from "../ResolveType";
+import * as ts from 'typescript';
+import {ResolveType, UsableDeclaration} from '../ResolveType';
 
 export function getModelAdditionalProperties(node: UsableDeclaration) {
     if (node.kind === ts.SyntaxKind.InterfaceDeclaration) {

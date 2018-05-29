@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {ResolveType} from "../ResolveType";
+import * as ts from 'typescript';
+import {ResolveType} from '../ResolveType';
 
 export class PromiseType {
     static isSupport(typeReference: ts.TypeReferenceNode) {

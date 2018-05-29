@@ -1,6 +1,6 @@
-import * as ts from "typescript";
-import {UsableDeclaration} from "../ResolveType";
-import {ResolveType} from "../../index";
+import * as ts from 'typescript';
+import {UsableDeclaration} from '../ResolveType';
+import {ResolveType} from '../../index';
 
 export function getNodeDescription(node: UsableDeclaration | ts.PropertyDeclaration | ts.ParameterDeclaration | ts.EnumDeclaration) {
     const typeChecker = ResolveType.typeChecker;

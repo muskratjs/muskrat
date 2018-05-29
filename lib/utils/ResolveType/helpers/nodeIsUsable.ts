@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export function nodeIsUsable(node: ts.Node) {
     switch (node.kind) {

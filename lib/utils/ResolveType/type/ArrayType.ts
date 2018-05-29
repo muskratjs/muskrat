@@ -1,5 +1,5 @@
-import * as ts from "typescript";
-import {ResolveType} from "../ResolveType";
+import * as ts from 'typescript';
+import {ResolveType} from '../ResolveType';
 
 export class ArrayType {
     static isSupport(kind: ts.SyntaxKind) {
@@ -10,6 +10,6 @@ export class ArrayType {
         return {
             dataType: 'array',
             elementType: ResolveType.resolve((typeNode as ts.ArrayTypeNode).elementType),
-        }
+        };
     }
 }

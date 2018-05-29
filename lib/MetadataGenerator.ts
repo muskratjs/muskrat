@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {config, getDecorators, ResolveType} from './utils/index';
+import {config, getDecorators, ResolveType} from './utils';
 
 export class MetadataGenerator {
     private program: ts.Program;
@@ -49,13 +49,13 @@ export class MetadataGenerator {
         }
 
         return ResolveType.resolve(nodeType);
-    };
+    }
 
     private filterByDecoratorsList(node: ts.Node, decorators: string[]) {
         return getDecorators(
             node,
             identifier => Object.keys(decorators)
                 .some((m: string) => m === identifier.text)
-        )
-    };
+        );
+    }
 }

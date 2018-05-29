@@ -1,12 +1,12 @@
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
-import {ResolveType, UsableDeclaration} from "../ResolveType";
-import {JsDoc} from "../../JsDoc";
-import {getModelTypeDeclaration} from "./getModelTypeDeclaration";
-import {getNodeDescription} from "./getNodeDescription";
-import {hasPublicModifier} from "./hasPublicModifier";
-import {getInitializerValue} from "./getInitializerValue";
-import {SGMetadata} from "../../../model/SGMetadata";
+import {ResolveType, UsableDeclaration} from '../ResolveType';
+import {JsDoc} from '../../JsDoc';
+import {getModelTypeDeclaration} from './getModelTypeDeclaration';
+import {getNodeDescription} from './getNodeDescription';
+import {hasPublicModifier} from './hasPublicModifier';
+import {getInitializerValue} from './getInitializerValue';
+import {SGMetadata} from '../../../model/SGMetadata';
 
 export function getModelProperties(node: UsableDeclaration, genericTypes?: ts.NodeArray<ts.TypeNode>): SGMetadata.Property[] {
     const isIgnored = (e: ts.TypeElement | ts.ClassElement) => {
@@ -65,7 +65,7 @@ export function getModelProperties(node: UsableDeclaration, genericTypes?: ts.No
     // Type alias model
     if (node.kind === ts.SyntaxKind.TypeAliasDeclaration) {
         const aliasDeclaration = node as ts.TypeAliasDeclaration;
-        const properties: any[] = [];
+        const prop: any[] = [];
 
         if (aliasDeclaration.type.kind === ts.SyntaxKind.IntersectionType) {
             const intersectionTypeNode = aliasDeclaration.type as ts.IntersectionTypeNode;
@@ -75,7 +75,7 @@ export function getModelProperties(node: UsableDeclaration, genericTypes?: ts.No
                     const typeReferenceNode = type as ts.TypeReferenceNode;
                     const modelType = getModelTypeDeclaration(typeReferenceNode.typeName);
                     const modelProps = getModelProperties(modelType);
-                    properties.push(...modelProps);
+                    prop.push(...modelProps);
                 }
             });
         }
@@ -84,10 +84,10 @@ export function getModelProperties(node: UsableDeclaration, genericTypes?: ts.No
             const typeReferenceNode = aliasDeclaration.type as ts.TypeReferenceNode;
             const modelType = getModelTypeDeclaration(typeReferenceNode.typeName);
             const modelProps = getModelProperties(modelType);
-            properties.push(...modelProps);
+            prop.push(...modelProps);
         }
 
-        return properties;
+        return prop;
     }
 
     // Class model
@@ -95,6 +95,7 @@ export function getModelProperties(node: UsableDeclaration, genericTypes?: ts.No
     const properties = classDeclaration.members
         .filter(member => {
             const ignore = isIgnored(member);
+
             return !ignore;
         })
         .filter((member) => member.kind === ts.SyntaxKind.PropertyDeclaration)

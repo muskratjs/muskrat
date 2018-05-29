@@ -1,6 +1,6 @@
-import * as ts from "typescript";
-import {ResolveType, UsableDeclaration} from "../ResolveType";
-import {nodeIsUsable, resolveLeftmostIdentifier, resolveModelTypeScope} from "./index";
+import * as ts from 'typescript';
+import {ResolveType, UsableDeclaration} from '../ResolveType';
+import {nodeIsUsable, resolveLeftmostIdentifier, resolveModelTypeScope} from './index';
 
 export function getModelTypeDeclaration(type: ts.EntityName) {
     const leftmostIdentifier = resolveLeftmostIdentifier(type);
