@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "lint": "tslint -c tslint.json 'lib/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Igor Ognichenko",
