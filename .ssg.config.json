@@ -1,0 +1,114 @@
+{
+  "annotations": {
+    "hidden": "hidden",
+    "deprecated": "deprecated"
+  },
+  "decorators": {
+    "controller": {
+      "Controller": {
+        "resolver": "...",
+        "unique": true
+      },
+      "JsonController": {
+        "resolver": "...",
+        "unique": true
+      }
+    },
+    "method": {
+      "Get": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Post": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Put": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Patch": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Delete": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Head": {
+        "resolver": "...",
+        "unique": true
+      },
+      "HttpCode": {
+        "resolver": "...",
+        "unique": true
+      },
+      "OnUndefined": {
+        "resolver": "...",
+        "unique": true
+      },
+      "OnNull": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Header": {
+        "resolver": "...",
+        "unique": true
+      },
+      "ContentType": {
+        "resolver": "...",
+        "unique": true
+      },
+      "Redirect": {
+        "resolver": "...",
+        "unique": true
+      }
+    },
+    "parameter": {
+      "Param": {
+        "resolver": "...",
+        "unique": false
+      },
+      "Params": {
+        "resolver": "...",
+        "unique": false
+      },
+      "QueryParam": {
+        "resolver": "...",
+        "unique": false
+      },
+      "QueryParams": {
+        "resolver": "...",
+        "unique": false
+      },
+      "HeaderParam": {
+        "resolver": "...",
+        "unique": false
+      },
+      "HeaderParams": {
+        "resolver": "...",
+        "unique": false
+      },
+      "CookieParam": {
+        "resolver": "...",
+        "unique": false
+      },
+      "Body": {
+        "resolver": "...",
+        "unique": false
+      },
+      "BodyParam": {
+        "resolver": "...",
+        "unique": false
+      },
+      "UploadedFiles": {
+        "resolver": "...",
+        "unique": false
+      },
+      "UploadedFile": {
+        "resolver": "...",
+        "unique": false
+      }
+    }
+  }
+}
