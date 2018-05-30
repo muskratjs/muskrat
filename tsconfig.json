@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist/",
-    "lib": ["es6"],
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -13,6 +12,6 @@
   },
   "exclude": [
     "build",
-    "../node_modules"
+    "node_modules"
   ]
 }
