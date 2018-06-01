@@ -2,7 +2,7 @@
   "name": "typescript2json",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/TypeResolver.js",
+  "main": "dist/index.js",
   "directories": {
     "lib": "lib"
   },

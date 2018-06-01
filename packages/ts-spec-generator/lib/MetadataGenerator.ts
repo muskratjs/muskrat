@@ -1,8 +1,7 @@
 import * as ts from 'typescript';
 import {values} from 'lodash';
 import {config, getDecorators} from './utils';
-import {TypeResolver} from 'typescript2json';
-import * as kindResolvers from 'typescript2json/dist/kind';
+import {TypeResolver, kindResolvers} from 'typescript2json';
 
 export class MetadataGenerator {
     private program: ts.Program;
