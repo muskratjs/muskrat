@@ -10,7 +10,7 @@ export interface Resolver {
 export class TypeResolver extends EventEmitter {
     private resolvers: Set<Resolver> = new Set();
     private nodes: ts.Node[] = [];
-    private typeChecker: ts.TypeChecker;
+    private readonly typeChecker: ts.TypeChecker;
 
     constructor(nodes: ts.Node[], typeChecker: ts.TypeChecker) {
         super();

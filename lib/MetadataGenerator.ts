@@ -1,13 +1,14 @@
 import * as ts from 'typescript';
 import {values} from 'lodash';
 import {config, getDecorators} from './utils';
-import {TypeResolver, kindResolvers} from 'typescript2json';
+import {TypeResolver} from './TypeResolver';
+import * as kindResolvers from './kind';
 
 export class MetadataGenerator {
     private program: ts.Program;
     private typeResolver: TypeResolver;
     private nodes: ts.Node[] = [];
-    private typeChecker: ts.TypeChecker;
+    private readonly typeChecker: ts.TypeChecker;
 
     constructor(entryFile: string, compilerOptions?: ts.CompilerOptions) {
         this.program = ts.createProgram([entryFile], compilerOptions || {});
