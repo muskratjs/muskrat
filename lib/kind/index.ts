@@ -5,6 +5,8 @@ export * from './BooleanLiteral';
 export * from './BufferType';
 export * from './ClassDeclaration';
 export * from './DateType';
+export * from './EnumDeclaration';
+export * from './InterfaceDeclaration';
 export * from './NeverKeyword';
 export * from './NullKeyword';
 export * from './NumberKeyword';
