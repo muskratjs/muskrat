@@ -9,8 +9,11 @@
     "str",
     "tpl",
     null,
+    null,
+    true,
     100,
     "any",
+    null,
     "()"
   ]
 }

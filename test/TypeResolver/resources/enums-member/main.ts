@@ -1,9 +1,9 @@
+export interface MyObject {
+    code: A.B;
+}
+
 enum A {
   B,
   C,
   D,
-}
-
-export interface MyObject {
-  code: A.B;
 }
