@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import {Resolver, TypeResolver} from '../TypeResolver';
 
-export class BooleanLiteral  implements Resolver {
+export class BooleanLiteral implements Resolver {
     private typeResolver: TypeResolver;
 
     constructor(typeResolver: TypeResolver) {

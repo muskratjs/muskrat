@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import {Resolver, TypeResolver} from '../TypeResolver';
 
-export class DateType  implements Resolver {
+export class DateType implements Resolver {
     private typeResolver: TypeResolver;
 
     constructor(typeResolver: TypeResolver) {
