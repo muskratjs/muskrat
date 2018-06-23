@@ -31,7 +31,7 @@ export class TypeResolver extends EventEmitter {
         return this.typeChecker;
     }
 
-    resolve(type: ts.TypeNode | ts.Declaration) {
+    resolve(type: ts.TypeNode | ts.Declaration | ts.Expression) {
         let res: Resolver;
 
         if (!type) {
