@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "code": {
+      "enum": [
+        0
+      ]
+    }
+  },
+  "type": "object"
+}
