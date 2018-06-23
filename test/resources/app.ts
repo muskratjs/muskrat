@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { UserController } from './controller/UserController';
 import { PetController } from './controller/PetController';
 import {createExpressServer} from 'routing-controllers';
