@@ -12,27 +12,12 @@ export class UnionType implements Resolver {
         return type.kind === ts.SyntaxKind.UnionType;
     }
 
-    resolve(type: ts.TypeNode) {
-        const unionType = type as ts.UnionTypeNode;
-        const supportType = unionType.types.some((t: ts.TypeNode) => t.kind === ts.SyntaxKind.LiteralType);
-
-        if (supportType) {
-            return {
-                enum: unionType.types.map((t) => {
-                    const literalType = (t as ts.LiteralTypeNode).literal;
-
-                    switch (literalType.kind) {
-                        case ts.SyntaxKind.TrueKeyword:
-                            return 'true';
-                        case ts.SyntaxKind.FalseKeyword:
-                            return 'false';
-                        default:
-                            return String((literalType as any).text);
-                    }
-                }),
-            };
-        }
-
-        return { type: 'object' };
+    resolve(type: ts.UnionTypeNode) {
+        return {
+            type: type.types
+                .map(subNode => this.typeResolver.resolve(subNode))
+                .map((t: any) => t.type)
+            ,
+        };
     }
 }
