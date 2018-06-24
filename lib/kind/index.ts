@@ -15,6 +15,7 @@ export * from './PromiseType';
 export * from './StringKeyword';
 export * from './StringLiteral';
 export * from './StringType';
+export * from './TypeAliasDeclaration';
 export * from './TypeLiteral';
 export * from './TypeReference';
 export * from './UndefinedKeyword';
