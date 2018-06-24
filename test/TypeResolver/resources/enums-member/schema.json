@@ -6,5 +6,8 @@
       ]
     }
   },
+  "required": [
+    "code"
+  ],
   "type": "object"
 }
