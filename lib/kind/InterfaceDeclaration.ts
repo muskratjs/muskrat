@@ -13,7 +13,7 @@ export class InterfaceDeclaration {
     }
 
     resolve(type: ts.InterfaceDeclaration) {
-        const properties: {[key: string]: any} = {};
+        const properties: { [key: string]: any } = {};
         const required: string[] = [];
 
         for (const property of type.members.filter(ts.isPropertySignature)) {
@@ -31,8 +31,19 @@ export class InterfaceDeclaration {
 
         return {
             type: 'object',
+            additionalProperties: this.getAdditionalProperties(type),
             properties,
             required,
         };
+    }
+
+    private getAdditionalProperties(node: ts.InterfaceDeclaration): any {
+        const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
+
+        if (!indexSignature) {
+            return false;
+        }
+
+        return this.typeResolver.resolve(indexSignature.type);
     }
 }
