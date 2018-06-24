@@ -12,7 +12,38 @@ export class TypeLiteral {
         return type.kind === ts.SyntaxKind.TypeLiteral;
     }
 
-    resolve(type: ts.TypeNode) {
-        return { type: 'any' };
+    resolve(type: ts.TypeLiteralNode) {
+        const properties: { [key: string]: any } = {};
+        const required: string[] = [];
+
+        for (const property of type.members.filter(ts.isPropertySignature)) {
+            const resolvedType: any = this.typeResolver.resolve(property.type);
+            const name: string = property.name.getText();
+
+            if (name) {
+                properties[name] = resolvedType;
+
+                if (!property.questionToken) {
+                    required.push(name);
+                }
+            }
+        }
+
+        return {
+            type: 'object',
+            additionalProperties: this.getAdditionalProperties(type),
+            properties,
+            required,
+        };
+    }
+
+    private getAdditionalProperties(node: ts.TypeLiteralNode): any {
+        const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
+
+        if (!indexSignature) {
+            return false;
+        }
+
+        return this.typeResolver.resolve(indexSignature.type);
     }
 }
