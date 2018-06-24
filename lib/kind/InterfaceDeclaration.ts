@@ -14,6 +14,7 @@ export class InterfaceDeclaration {
 
     resolve(type: ts.InterfaceDeclaration) {
         const properties: {[key: string]: any} = {};
+        const required: string[] = [];
 
         for (const property of type.members.filter(ts.isPropertySignature)) {
             const resolvedType: any = this.typeResolver.resolve(property.type);
@@ -21,12 +22,17 @@ export class InterfaceDeclaration {
 
             if (name) {
                 properties[name] = resolvedType;
+
+                if (!property.questionToken) {
+                    required.push(name);
+                }
             }
         }
 
         return {
             type: 'object',
             properties,
+            required,
         };
     }
 }
