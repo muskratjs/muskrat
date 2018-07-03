@@ -5,12 +5,13 @@ import {UnknownNodeException} from './exception';
 
 export class ChainResolver implements IResolver {
     public constructor(
-        private resolvers: IResolver[],
+        private resolvers: IResolver[] = [],
     ) {
     }
 
-    public addResolver(resolver: IResolver): this {
+    public addResolver(resolver: IResolver): ChainResolver {
         this.resolvers.push(resolver);
+
         return this;
     }
 

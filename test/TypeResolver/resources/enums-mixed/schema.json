@@ -1,6 +1,15 @@
 {
-  "enum": [
-    "x",
-    100
-  ]
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "Enum": {
+      "type": [
+        "string",
+        "number"
+      ],
+      "enum": [
+        "x",
+        100
+      ]
+    }
+  }
 }

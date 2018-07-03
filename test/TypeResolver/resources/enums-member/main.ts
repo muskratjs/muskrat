@@ -2,7 +2,7 @@ export interface MyObject {
     code: A.B;
 }
 
-enum A {
+export enum A {
   B,
   C,
   D,

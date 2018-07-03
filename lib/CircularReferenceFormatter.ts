@@ -22,6 +22,7 @@ export class CircularReferenceFormatter implements IFormatter {
         const definition: Definition = {};
         this.definition.set(type, definition);
         Object.assign(definition, this.childFormatter.getDefinition(type));
+
         return definition;
     }
 
@@ -33,6 +34,7 @@ export class CircularReferenceFormatter implements IFormatter {
         const children: BaseType[] = [];
         this.children.set(type, children);
         children.push(...this.childFormatter.getChildren(type));
+
         return children;
     }
 }

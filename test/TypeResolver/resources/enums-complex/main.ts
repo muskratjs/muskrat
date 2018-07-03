@@ -11,8 +11,7 @@ export enum Enum {
     STR_1 = 'str' as any,
     STR_2 = `tpl` as any,
 
-    NULL_1 = null,
-    NULL_2 = null as any,
+    NULL_1 = null as any,
 
     ANY_1 = <any>true,
     ANY_2 = <any>100,
