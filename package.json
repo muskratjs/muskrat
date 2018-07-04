@@ -1,7 +1,7 @@
 {
-  "name": "ts-spec-generator",
+  "name": "muskrat",
   "version": "1.0.0",
-  "description": "swagger spec generator",
+  "description": "Api spec generator",
   "main": "dist/index.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text-summary mocha --exit",
