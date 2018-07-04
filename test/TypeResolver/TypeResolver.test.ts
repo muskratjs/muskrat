@@ -7,12 +7,12 @@ import {describe} from 'mocha';
 import {values} from 'lodash';
 import * as resolvers from '../../lib/resolver';
 import * as formaters from '../../lib/formatter';
-import {ChainResolver} from '../../lib/ChainResolver';
-import {Context} from '../../lib/Context';
+import {TypeResolver} from '../../lib/TypeResolver';
 import {ChainFormatter} from '../../lib/ChainFormatter';
 import {CircularReferenceFormatter} from '../../lib/CircularReferenceFormatter';
 import {CircularReferenceResolver} from '../../lib/CircularReferenceResolver';
-import {Identifier} from 'typescript';
+import {ExposeResolver} from '../../lib/ExposeResolver';
+import {SchemaGenerator} from '../../lib/SchemaGenerator';
 
 const assert = require('chai').assert;
 const isTested: string[] = [];
@@ -38,11 +38,18 @@ program.getSourceFiles()
 ;
 
 const typeChecker = program.getTypeChecker();
-const chainResolver = new ChainResolver();
+const chainResolver = new TypeResolver();
 
 for (const resolver of values(resolvers)) {
-    const r: any = resolver;
-    chainResolver.addResolver(new CircularReferenceResolver(new r(typeChecker, chainResolver)));
+    chainResolver.addResolver(
+        new CircularReferenceResolver(
+            new ExposeResolver(
+                typeChecker,
+                new (resolver as any)(typeChecker, chainResolver),
+                'export'
+            )
+        )
+    );
 }
 
 const chainFormatter = new ChainFormatter([]);
@@ -56,6 +63,7 @@ for (const formatter of values(formaters)) {
 describe('type-resolver', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
+        .filter(n => !ts.isImportDeclaration(n))
         .forEach((node: ts.TypeNode) => {
             const testFilePath = node.getSourceFile().fileName;
             const testFolder = path.basename(path.dirname(node.getSourceFile().fileName));
@@ -74,21 +82,17 @@ describe('type-resolver', () => {
                         ).toString()
                     );
 
-                    const type = chainResolver.resolve(node, new Context());
-                    let definitions = circularReferenceFormatter.getDefinition(type);
+                    const schemaGenerator = new SchemaGenerator(
+                        program,
+                        chainResolver,
+                        circularReferenceFormatter
+                    );
+                    const resolvedSchema = schemaGenerator.createSchema(node);
 
-                    if ((node as any).name && ts.isIdentifier((node as any).name)) {
-                        const name = (node as any).name.getText();
-
-                        definitions = {
-                            [name]: definitions,
-                        };
-                    }
-
-                    const resolvedSchema = {
-                        $schema: 'http://json-schema.org/draft-06/schema#',
-                        definitions,
-                    };
+                    fs.writeFileSync(
+                        'dist/' + path.basename(testFolder) + '.json',
+                        JSON.stringify(resolvedSchema, null, '    ')
+                    );
 
                     assert.deepEqual(resolvedSchema, schema);
                 });

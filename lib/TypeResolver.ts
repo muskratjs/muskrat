@@ -1,61 +1,35 @@
 import * as ts from 'typescript';
-import {EventEmitter} from 'events';
+import {Context} from './Context';
+import {IResolver, BaseType} from './model';
+import {UnknownNodeException} from './exception';
 
-export interface Resolver {
-    isSupport(type: ts.TypeNode | ts.Declaration | any): boolean;
-
-    resolve(type: ts.TypeNode | ts.Declaration | any): object;
-}
-
-export class TypeResolver extends EventEmitter {
-    private resolvers: Set<Resolver> = new Set();
-    private nodes: ts.Node[] = [];
-    private readonly typeChecker: ts.TypeChecker;
-
-    constructor(nodes: ts.Node[], typeChecker: ts.TypeChecker) {
-        super();
-
-        this.nodes = nodes;
-        this.typeChecker = typeChecker;
+export class TypeResolver implements IResolver {
+    public constructor(
+        private resolvers: IResolver[] = [],
+    ) {
     }
 
-    register(resolver: { new (...args: any[]): any }) {
-        const resolverObject = new resolver(this);
-
-        this.resolvers.add(resolverObject);
+    public addResolver(resolver: IResolver): TypeResolver {
+        this.resolvers.push(resolver);
 
         return this;
     }
 
-    getTypeChecker() {
-        return this.typeChecker;
+    public isSupport(node: ts.Node): boolean {
+        return this.resolvers.some((resolver) => resolver.isSupport(node));
     }
 
-    resolve(type: ts.TypeNode | ts.Declaration | ts.Expression) {
-        let res: Resolver;
+    public resolve(node: ts.Node, context: Context): BaseType {
+        return this.getResolver(node, context).resolve(node, context);
+    }
 
-        if (!type) {
-            return;
-        }
-
-        for (const resolver of Array.from(this.resolvers)) {
-            if (resolver.isSupport(type)) {
-                res = resolver;
+    private getResolver(node: ts.Node, context: Context): IResolver {
+        for (const resolver of this.resolvers) {
+            if (resolver.isSupport(node)) {
+                return resolver;
             }
         }
 
-        if (res) {
-            const resolvedType = res.resolve(type);
-
-            if (!resolvedType) {
-                throw new Error(`Type not resolved kind: ${type.kind}`);
-            }
-
-            this.emit('resolved', resolvedType);
-
-            return resolvedType;
-        }
-
-        throw new Error(`Type not resolved kind: ${type.kind}`);
+        throw new UnknownNodeException(node, context.getReference());
     }
 }

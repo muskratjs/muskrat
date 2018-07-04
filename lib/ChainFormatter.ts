@@ -10,6 +10,7 @@ export class ChainFormatter implements IFormatter {
 
     public addFormatter(formatter: IFormatter): this {
         this.formatters.push(formatter);
+
         return this;
     }
 

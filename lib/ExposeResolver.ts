@@ -17,6 +17,7 @@ export class ExposeResolver implements IResolver {
 
     public resolve(node: ts.Node, context: Context): BaseType {
         const baseType = this.resolver.resolve(node, context);
+
         if (!this.isExportNode(node)) {
             return baseType;
         }
@@ -35,6 +36,7 @@ export class ExposeResolver implements IResolver {
         }
 
         const localSymbol = localSymbolAtNode(node);
+
         return localSymbol ? 'exportSymbol' in localSymbol : false;
     }
 
