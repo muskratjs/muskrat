@@ -19,7 +19,7 @@ export class MappedTypeResolver extends Resolver {
 
     private getProperties(node: ts.MappedTypeNode, context: Context): ObjectProperty[] {
         const constraintNode = assertDefined(node.typeParameter.constraint);
-        const constraintType = this.childResolver.resolve(constraintNode, context);
+        const constraintType = this.resolver.resolve(constraintNode, context);
         const keyListType = assertInstanceOf(
             derefType(constraintType),
             UnionType,
@@ -29,7 +29,7 @@ export class MappedTypeResolver extends Resolver {
         const typeNode = assertDefined(node.type);
 
         return keyListType.getTypes().reduce((result: ObjectProperty[], keyType) => {
-            const propertyType = this.childResolver.resolve(
+            const propertyType = this.resolver.resolve(
                 typeNode,
                 this.createSubContext(node, keyType, context),
             );

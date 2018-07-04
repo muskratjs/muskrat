@@ -9,7 +9,7 @@ export class IntersectionTypeResolver extends Resolver {
 
     public resolve(node: ts.IntersectionTypeNode, context: Context): BaseType {
         return new IntersectionType(
-            node.types.map((subNode) => this.childResolver.resolve(subNode, context)),
+            node.types.map((subNode) => this.resolver.resolve(subNode, context)),
         );
     }
 }

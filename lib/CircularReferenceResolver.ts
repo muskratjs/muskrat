@@ -6,12 +6,12 @@ export class CircularReferenceResolver implements IResolver {
     private circular = new Map<string, BaseType>();
 
     public constructor(
-        private childResolver: IResolver,
+        private resolver: IResolver,
     ) {
     }
 
     public isSupport(node: ts.Node): boolean {
-        return this.childResolver.isSupport(node);
+        return this.resolver.isSupport(node);
     }
 
     public resolve(node: ts.Node, context: Context): BaseType {
@@ -22,7 +22,7 @@ export class CircularReferenceResolver implements IResolver {
 
         const reference = new ReferenceType();
         this.circular.set(key, reference);
-        reference.setType(this.childResolver.resolve(node, context));
+        reference.setType(this.resolver.resolve(node, context));
         this.circular.delete(key);
 
         return reference.getType();
@@ -34,6 +34,7 @@ export class CircularReferenceResolver implements IResolver {
             ids.push(node.pos, node.end);
             node = node.parent;
         }
+
         return ids.join('-') + '<' + context.getArguments().map((arg) => arg.getId()).join(',') + '>';
     }
 }

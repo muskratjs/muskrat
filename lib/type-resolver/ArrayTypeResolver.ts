@@ -9,7 +9,7 @@ export class ArrayTypeResolver extends Resolver {
 
     public resolve(node: ts.ArrayTypeNode, context: Context): BaseType {
         return new ArrayType(
-            this.childResolver.resolve(node.elementType, context),
+            this.resolver.resolve(node.elementType, context),
         );
     }
 }

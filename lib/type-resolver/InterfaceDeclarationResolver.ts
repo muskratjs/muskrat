@@ -31,7 +31,7 @@ export class InterfaceDeclarationResolver extends Resolver {
 
         return node.heritageClauses.reduce((result: BaseType[], baseType) => [
             ...result,
-            ...baseType.types.map((expression) => this.childResolver.resolve(expression, context)),
+            ...baseType.types.map((expression) => this.resolver.resolve(expression, context)),
         ], []);
     }
 
@@ -44,7 +44,7 @@ export class InterfaceDeclarationResolver extends Resolver {
 
                 const objectProperty = new ObjectProperty(
                     propertySymbol.getName(),
-                    this.childResolver.resolve(propertyType, context),
+                    this.resolver.resolve(propertyType, context),
                     !propertyNode.questionToken,
                 );
 
@@ -63,7 +63,7 @@ export class InterfaceDeclarationResolver extends Resolver {
 
         const indexType = assertDefined(indexSignature.type);
 
-        return this.childResolver.resolve(indexType, context);
+        return this.resolver.resolve(indexType, context);
     }
 
     private getTypeId(node: ts.Node, context: Context): string {

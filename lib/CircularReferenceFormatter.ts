@@ -6,12 +6,12 @@ export class CircularReferenceFormatter implements IFormatter {
     private children = new Map<BaseType, BaseType[]>();
 
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
     public isSupport(type: BaseType): boolean {
-        return this.childFormatter.isSupport(type);
+        return this.formatter.isSupport(type);
     }
 
     public getDefinition(type: BaseType): Definition {
@@ -21,7 +21,7 @@ export class CircularReferenceFormatter implements IFormatter {
 
         const definition: Definition = {};
         this.definition.set(type, definition);
-        Object.assign(definition, this.childFormatter.getDefinition(type));
+        Object.assign(definition, this.formatter.getDefinition(type));
 
         return definition;
     }
@@ -33,7 +33,7 @@ export class CircularReferenceFormatter implements IFormatter {
 
         const children: BaseType[] = [];
         this.children.set(type, children);
-        children.push(...this.childFormatter.getChildren(type));
+        children.push(...this.formatter.getChildren(type));
 
         return children;
     }

@@ -8,6 +8,6 @@ export class LiteralTypeResolver extends Resolver {
     }
 
     public resolve(node: ts.LiteralTypeNode, context: Context): BaseType {
-        return this.childResolver.resolve(node.literal, context);
+        return this.resolver.resolve(node.literal, context);
     }
 }

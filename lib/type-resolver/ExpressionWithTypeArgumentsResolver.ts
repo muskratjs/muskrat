@@ -16,7 +16,7 @@ export class ExpressionWithTypeArgumentsResolver extends Resolver {
             const declarations = assertDefined(aliasedSymbol.declarations);
             const declaration = declarations.find((it) => this.isValidDeclaration(it));
 
-            return this.childResolver.resolve(
+            return this.resolver.resolve(
                 assertDefined(declaration),
                 this.createSubContext(node, context),
             );
@@ -26,7 +26,7 @@ export class ExpressionWithTypeArgumentsResolver extends Resolver {
             const declarations = assertDefined(typeSymbol.declarations);
             const declaration = declarations.find((it) => this.isValidDeclaration(it));
 
-            return this.childResolver.resolve(
+            return this.resolver.resolve(
                 assertDefined(declaration),
                 this.createSubContext(node, context),
             );
@@ -38,7 +38,7 @@ export class ExpressionWithTypeArgumentsResolver extends Resolver {
 
         if (node.typeArguments && node.typeArguments.length) {
             node.typeArguments.forEach((typeArg) => {
-                subContext.pushArgument(this.childResolver.resolve(typeArg, parentContext));
+                subContext.pushArgument(this.resolver.resolve(typeArg, parentContext));
             });
         }
 

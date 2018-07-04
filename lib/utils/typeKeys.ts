@@ -11,11 +11,13 @@ function valueToLiteral(value: LiteralValue): LiteralType {
 
 function uniqueLiterals(types: LiteralType[]): LiteralType[] {
     const values = types.map(literalToValue);
+
     return uniqueArray(values).map(valueToLiteral);
 }
 
 function intersectLiterals(types: LiteralType[][]): LiteralType[] {
     const [first, ...rest] = types;
+
     return intersectArray(first.map(literalToValue), ...rest.map((it) => it.map(literalToValue))).map(valueToLiteral);
 }
 
@@ -36,7 +38,9 @@ export function getTypeKeys(type: BaseType): LiteralType[] {
     } else if (type instanceof ObjectType) {
         const objectProperties = type.getProperties()
             .map((property) => property.getName())
-            .map(valueToLiteral);
+            .map(valueToLiteral)
+        ;
+
         return uniqueLiterals(
             type.getBaseTypes()
                 .map(getTypeKeys)
@@ -57,12 +61,16 @@ export function getTypeByKey(type: BaseType, index: LiteralType): BaseType | und
     if (type instanceof IntersectionType) {
         const types = type.getTypes()
             .map((subType) => getTypeByKey(subType, index))
-            .filter(filterDefined);
+            .filter(filterDefined)
+        ;
+
         return types.length > 1 ? new IntersectionType(types) : types[0];
     } else if (type instanceof UnionType) {
         const types = type.getTypes()
             .map((subType) => getTypeByKey(subType, index))
-            .filter(filterDefined);
+            .filter(filterDefined)
+        ;
+
         return types.length > 1 ? new UnionType(types) : types[0];
     } else if (type instanceof TupleType) {
         return type.getTypes().find((it, idx) => idx === index.getValue());
@@ -73,12 +81,14 @@ export function getTypeByKey(type: BaseType, index: LiteralType): BaseType | und
         }
 
         const additionalProperty = type.getAdditionalProperties();
+
         if (additionalProperty) {
             return additionalProperty;
         }
 
         for (const subType of type.getBaseTypes()) {
             const subKeyType = getTypeByKey(subType, index);
+
             if (subKeyType) {
                 return subKeyType;
             }

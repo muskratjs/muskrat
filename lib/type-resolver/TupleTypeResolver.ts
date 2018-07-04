@@ -10,7 +10,7 @@ export class TupleTypeResolver extends Resolver {
     public resolve(node: ts.TupleTypeNode, context: Context): BaseType {
         return new TupleType(
             node.elementTypes.map((item) => {
-                return this.childResolver.resolve(item, context);
+                return this.resolver.resolve(item, context);
             }),
         );
     }

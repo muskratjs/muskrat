@@ -15,6 +15,6 @@ program
     .option('-t, --type [optional]', 'spec type')
     .parse(process.argv); // end with parse to parse through the input
 
-// const metadata = new MetadataGenerator('./test/resources/app.ts', require(path.join(process.cwd(), 'tsconfig.json')));
+// const metadata = new MetadataGenerator('./test/valid-types/app.ts', require(path.join(process.cwd(), 'tsconfig.json')));
 
 // fs.writeFileSync('test.json', JSON.stringify(metadata.getMetadata(), null, '    '));

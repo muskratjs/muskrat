@@ -18,7 +18,7 @@ const assert = require('chai').assert;
 const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
 const compilerOptions = require(path.join(process.cwd(), 'tsconfig.json'));
-const testFoldersPattern = path.join(process.cwd(), 'test/TypeResolver/resources/*');
+const testFoldersPattern = path.join(process.cwd(), 'test/TypeResolver/valid-types/*');
 
 const program = ts.createProgram(
     glob.sync(testFoldersPattern)
@@ -61,7 +61,7 @@ for (const formatter of values(formaters)) {
     chainFormatter.addFormatter(new f(circularReferenceFormatter));
 }
 
-describe('type-type-resolver', () => {
+describe('Valid Type Resolve', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
         .filter(n => !ts.isImportDeclaration(n))
@@ -78,7 +78,7 @@ describe('type-type-resolver', () => {
                     const schema = JSON.parse(
                         fs.readFileSync(
                             path.join(process.cwd(),
-                                'test/TypeResolver/resources',
+                                'test/TypeResolver/valid-types',
                                 path.basename(testFolder),
                                 'schema.json'
                             )

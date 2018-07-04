@@ -9,7 +9,7 @@ export class TypeOperatorResolver extends Resolver {
     }
 
     public resolve(node: ts.TypeOperatorNode, context: Context): BaseType {
-        const type = this.childResolver.resolve(node.type, context);
+        const type = this.resolver.resolve(node.type, context);
         const keys = getTypeKeys(type);
 
         return new UnionType(keys);

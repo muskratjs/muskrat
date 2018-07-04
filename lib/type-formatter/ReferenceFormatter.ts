@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class ReferenceFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -22,6 +22,6 @@ export class ReferenceFormatter implements IFormatter {
 
         // this means that the referred interface is private
         // so we have to expose it in the schema definitions
-        return this.childFormatter.getChildren(new DefinitionType(type.getId(), type.getType()));
+        return this.formatter.getChildren(new DefinitionType(type.getId(), type.getType()));
     }
 }

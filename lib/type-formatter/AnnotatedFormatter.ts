@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class AnnotatedFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -13,12 +13,12 @@ export class AnnotatedFormatter implements IFormatter {
 
     public getDefinition(type: AnnotatedType): Definition {
         return {
-            ...this.childFormatter.getDefinition(type.getType()),
+            ...this.formatter.getDefinition(type.getType()),
             ...type.getAnnotations(),
         };
     }
 
     public getChildren(type: AnnotatedType): BaseType[] {
-        return this.childFormatter.getChildren(type.getType());
+        return this.formatter.getChildren(type.getType());
     }
 }

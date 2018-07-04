@@ -36,6 +36,7 @@ export class AnnotationsReader implements IAnnotationsReader {
 
     public getAnnotations(node: ts.Node): Annotations | undefined {
         const symbol = symbolAtNode(node);
+
         if (!symbol) {
             return undefined;
         }
@@ -53,6 +54,7 @@ export class AnnotationsReader implements IAnnotationsReader {
 
             return result;
         }, {});
+
         return Object.keys(annotations).length ? annotations : undefined;
     }
 

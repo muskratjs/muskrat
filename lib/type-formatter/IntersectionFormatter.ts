@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class IntersectionFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -12,7 +12,7 @@ export class IntersectionFormatter implements IFormatter {
     }
 
     public getDefinition(type: IntersectionType): Definition {
-        const definitions = type.getTypes().map((item) => this.childFormatter.getDefinition(item));
+        const definitions = type.getTypes().map((item) => this.formatter.getDefinition(item));
 
         // TODO: optimize intersection
         if (definitions.length === 0) {
@@ -27,7 +27,7 @@ export class IntersectionFormatter implements IFormatter {
     public getChildren(type: IntersectionType): BaseType[] {
         return type.getTypes().reduce((result: BaseType[], item) => [
             ...result,
-            ...this.childFormatter.getChildren(item),
+            ...this.formatter.getChildren(item),
         ], []);
     }
 }

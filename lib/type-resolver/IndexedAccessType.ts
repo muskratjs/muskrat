@@ -9,14 +9,14 @@ export class IndexedAccessType extends Resolver {
     }
 
     public resolve(node: ts.IndexedAccessTypeNode, context: Context): BaseType {
-        const indexType = this.childResolver.resolve(node.indexType, context);
+        const indexType = this.resolver.resolve(node.indexType, context);
         const indexLiteral = assertInstanceOf(
             indexType,
             LiteralType,
             `Index access type should be instance of LiteralType ("${indexType.getId()}" given)`,
         );
 
-        const objectType = this.childResolver.resolve(node.objectType, context);
+        const objectType = this.resolver.resolve(node.objectType, context);
 
         return assertDefined(
             getTypeByKey(objectType, indexLiteral),

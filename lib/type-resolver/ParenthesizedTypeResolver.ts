@@ -8,6 +8,6 @@ export class ParenthesizedTypeResolver extends Resolver {
     }
 
     public resolve(node: ts.ParenthesizedTypeNode, context: Context): BaseType {
-        return this.childResolver.resolve(node.type, context);
+        return this.resolver.resolve(node.type, context);
     }
 }

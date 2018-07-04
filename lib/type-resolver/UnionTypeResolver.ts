@@ -10,7 +10,7 @@ export class UnionTypeResolver extends Resolver {
     public resolve(node: ts.UnionTypeNode, context: Context): BaseType {
         return new UnionType(
             node.types.map((subNode) => {
-                return this.childResolver.resolve(subNode, context);
+                return this.resolver.resolve(subNode, context);
             }),
         );
     }

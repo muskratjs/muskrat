@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class UnionFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -12,7 +12,7 @@ export class UnionFormatter implements IFormatter {
     }
 
     public getDefinition(type: UnionType): Definition {
-        const definitions = type.getTypes().map((item) => this.childFormatter.getDefinition(item));
+        const definitions = type.getTypes().map((item) => this.formatter.getDefinition(item));
 
         // special case for string literals | string -> string
         let stringType = true;
@@ -44,7 +44,7 @@ export class UnionFormatter implements IFormatter {
     public getChildren(type: UnionType): BaseType[] {
         return type.getTypes().reduce((result: BaseType[], item) => [
             ...result,
-            ...this.childFormatter.getChildren(item),
+            ...this.formatter.getChildren(item),
         ], []);
     }
 }

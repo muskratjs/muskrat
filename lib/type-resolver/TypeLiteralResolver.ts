@@ -25,7 +25,7 @@ export class TypeLiteralResolver extends Resolver {
                 const propertySymbol = assertDefined(symbolAtNode(propertyNode));
                 const objectProperty = new ObjectProperty(
                     propertySymbol.getName(),
-                    this.childResolver.resolve(propertyType, context),
+                    this.resolver.resolve(propertyType, context),
                     !propertyNode.questionToken,
                 );
 
@@ -42,7 +42,7 @@ export class TypeLiteralResolver extends Resolver {
             return undefined;
         }
 
-        return this.childResolver.resolve(assertDefined(indexSignature.type), context);
+        return this.resolver.resolve(assertDefined(indexSignature.type), context);
     }
 
     private getTypeId(node: ts.Node, context: Context): string {

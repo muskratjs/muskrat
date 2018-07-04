@@ -15,7 +15,7 @@ export class TypeReferenceResolver extends Resolver {
             const declarations = assertDefined(aliasedSymbol.declarations);
             const declaration = declarations.find((it) => this.isValidDeclaration(it));
 
-            return this.childResolver.resolve(
+            return this.resolver.resolve(
                 assertDefined(declaration),
                 this.createSubContext(node, context),
             );
@@ -23,12 +23,13 @@ export class TypeReferenceResolver extends Resolver {
             return context.getArgument(typeSymbol.name);
         } else if (typeSymbol.name === 'Array' || typeSymbol.name === 'ReadonlyArray') {
             const arrayItemType = this.createSubContext(node, context).getArguments()[0];
+
             return new ArrayType(assertDefined(arrayItemType));
         } else {
             const declarations = assertDefined(typeSymbol.declarations);
             const declaration = declarations.find((it) => this.isValidDeclaration(it));
 
-            return this.childResolver.resolve(
+            return this.resolver.resolve(
                 assertDefined(declaration),
                 this.createSubContext(node, context),
             );
@@ -37,11 +38,13 @@ export class TypeReferenceResolver extends Resolver {
 
     private createSubContext(node: ts.TypeReferenceNode, parentContext: Context): Context {
         const subContext = new Context(node);
+
         if (node.typeArguments && node.typeArguments.length) {
             node.typeArguments.forEach((typeArg) => {
-                subContext.pushArgument(this.childResolver.resolve(typeArg, parentContext));
+                subContext.pushArgument(this.resolver.resolve(typeArg, parentContext));
             });
         }
+
         return subContext;
     }
 

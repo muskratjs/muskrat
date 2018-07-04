@@ -6,7 +6,7 @@ import {BaseType} from './type';
 export abstract class Resolver implements IResolver {
     protected constructor(
         protected typeChecker: ts.TypeChecker,
-        protected childResolver: IResolver,
+        protected resolver: IResolver,
     ) {
 
     }

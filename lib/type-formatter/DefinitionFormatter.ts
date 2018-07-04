@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class DefinitionFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -18,7 +18,7 @@ export class DefinitionFormatter implements IFormatter {
     public getChildren(type: DefinitionType): BaseType[] {
         return [
             type,
-            ...this.childFormatter.getChildren(type.getType()),
+            ...this.formatter.getChildren(type.getType()),
         ];
     }
 }

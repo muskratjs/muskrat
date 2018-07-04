@@ -18,7 +18,7 @@ export class TypeAliasDeclarationResolver extends Resolver {
 
         return new AliasType(
             this.getTypeId(node, context),
-            this.childResolver.resolve(node.type, context),
+            this.resolver.resolve(node.type, context),
         );
     }
 

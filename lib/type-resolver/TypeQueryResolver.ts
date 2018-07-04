@@ -14,9 +14,9 @@ export class TypeQueryResolver extends Resolver {
         const valueDec = assertDefined(symbol.valueDeclaration) as ts.VariableDeclaration;
 
         if (valueDec.type) {
-            return this.childResolver.resolve(valueDec.type, context);
+            return this.resolver.resolve(valueDec.type, context);
         } else if (valueDec.initializer) {
-            return this.childResolver.resolve(valueDec.initializer, context);
+            return this.resolver.resolve(valueDec.initializer, context);
         } else {
             throw new LogicException(`Invalid type query "${valueDec.getFullText()}"`);
         }

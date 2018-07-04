@@ -16,6 +16,7 @@ export class AnnotationsResolver {
     public resolve(node: ts.Node, context: Context): BaseType {
         const baseType = this.childResolver.resolve(node, context);
         const annotations = this.annotationsReader.getAnnotations(this.getAnnotatedNode(node));
+
         return !annotations ? baseType : new AnnotatedType(baseType, annotations);
     }
 

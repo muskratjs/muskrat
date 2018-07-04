@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class ArrayFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -14,11 +14,11 @@ export class ArrayFormatter implements IFormatter {
     public getDefinition(type: ArrayType): Definition {
         return {
             type: 'array',
-            items: this.childFormatter.getDefinition(type.getItem()),
+            items: this.formatter.getDefinition(type.getItem()),
         };
     }
 
     public getChildren(type: ArrayType): BaseType[] {
-        return this.childFormatter.getChildren(type.getItem());
+        return this.formatter.getChildren(type.getItem());
     }
 }

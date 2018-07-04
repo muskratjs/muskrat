@@ -27,6 +27,7 @@ export class EnumDeclarationResolver extends Resolver {
         }
 
         const initializer = assertDefined(member.initializer);
+
         return this.parseInitializer(initializer);
     }
 

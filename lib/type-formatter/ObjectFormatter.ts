@@ -12,7 +12,7 @@ import {Definition} from '../schema';
 
 export class ObjectFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -28,7 +28,7 @@ export class ObjectFormatter implements IFormatter {
         return {
             allOf: [
                 this.getObjectDefinition(type),
-                ...type.getBaseTypes().map((baseType) => this.childFormatter.getDefinition(baseType)),
+                ...type.getBaseTypes().map((baseType) => this.formatter.getDefinition(baseType)),
             ],
         };
     }
@@ -40,16 +40,16 @@ export class ObjectFormatter implements IFormatter {
         return [
             ...type.getBaseTypes().reduce((result: BaseType[], baseType) => [
                 ...result,
-                ...this.childFormatter.getChildren(baseType),
+                ...this.formatter.getChildren(baseType),
             ], []),
 
             ...additionalProperties instanceof BaseType ?
-                this.childFormatter.getChildren(additionalProperties) :
+                this.formatter.getChildren(additionalProperties) :
                 [],
 
             ...properties.reduce((result: BaseType[], property) => [
                 ...result,
-                ...this.childFormatter.getChildren(property.getType()),
+                ...this.formatter.getChildren(property.getType()),
             ], []),
         ];
     }
@@ -66,7 +66,7 @@ export class ObjectFormatter implements IFormatter {
             .map((property) => this.prepareObjectProperty(property))
             .reduce((result: IStringMap<Definition>, property) => ({
                 ...result,
-                [property.getName()]: this.childFormatter.getDefinition(property.getType()),
+                [property.getName()]: this.formatter.getDefinition(property.getType()),
             }), {});
 
         return {
@@ -84,7 +84,7 @@ export class ObjectFormatter implements IFormatter {
 
         return additionalProperties instanceof AnyType
             ? {}
-            : {additionalProperties: this.childFormatter.getDefinition(additionalProperties)};
+            : {additionalProperties: this.formatter.getDefinition(additionalProperties)};
     }
 
     private prepareObjectProperty(property: ObjectProperty): ObjectProperty {

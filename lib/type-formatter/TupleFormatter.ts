@@ -3,7 +3,7 @@ import {Definition} from '../schema';
 
 export class TupleFormatter implements IFormatter {
     public constructor(
-        private childFormatter: IFormatter,
+        private formatter: IFormatter,
     ) {
     }
 
@@ -16,14 +16,14 @@ export class TupleFormatter implements IFormatter {
         if (itemTypes.length > 1) {
             return {
                 type: 'array',
-                items: itemTypes.map((item) => this.childFormatter.getDefinition(item)),
+                items: itemTypes.map((item) => this.formatter.getDefinition(item)),
                 minItems: itemTypes.length,
-                additionalItems: this.childFormatter.getDefinition(new UnionType(itemTypes)),
+                additionalItems: this.formatter.getDefinition(new UnionType(itemTypes)),
             };
         } else {
             return {
                 type: 'array',
-                items: this.childFormatter.getDefinition(itemTypes[0]),
+                items: this.formatter.getDefinition(itemTypes[0]),
                 minItems: 1,
             };
         }
@@ -32,7 +32,7 @@ export class TupleFormatter implements IFormatter {
     public getChildren(type: TupleType): BaseType[] {
         return type.getTypes().reduce((result: BaseType[], item) => [
             ...result,
-            ...this.childFormatter.getChildren(item),
+            ...this.formatter.getChildren(item),
         ], []);
     }
 }
