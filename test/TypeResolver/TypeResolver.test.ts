@@ -5,10 +5,10 @@ import * as fs from 'fs';
 import * as ts from 'typescript';
 import {describe} from 'mocha';
 import {values} from 'lodash';
-import * as resolvers from '../../lib/resolver';
-import * as formaters from '../../lib/formatter';
+import * as resolvers from '../../lib/type-resolver';
+import * as formaters from '../../lib/type-formatter';
 import {TypeResolver} from '../../lib/TypeResolver';
-import {ChainFormatter} from '../../lib/ChainFormatter';
+import {TypeFormatter} from '../../lib/TypeFormatter';
 import {CircularReferenceFormatter} from '../../lib/CircularReferenceFormatter';
 import {CircularReferenceResolver} from '../../lib/CircularReferenceResolver';
 import {ExposeResolver} from '../../lib/ExposeResolver';
@@ -19,6 +19,7 @@ const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
 const compilerOptions = require(path.join(process.cwd(), 'tsconfig.json'));
 const testFoldersPattern = path.join(process.cwd(), 'test/TypeResolver/resources/*');
+
 const program = ts.createProgram(
     glob.sync(testFoldersPattern)
         .map((testPath) => path.join(testPath, 'main'))
@@ -52,7 +53,7 @@ for (const resolver of values(resolvers)) {
     );
 }
 
-const chainFormatter = new ChainFormatter([]);
+const chainFormatter = new TypeFormatter([]);
 const circularReferenceFormatter = new CircularReferenceFormatter(chainFormatter);
 
 for (const formatter of values(formaters)) {
@@ -60,10 +61,12 @@ for (const formatter of values(formaters)) {
     chainFormatter.addFormatter(new f(circularReferenceFormatter));
 }
 
-describe('type-resolver', () => {
+describe('type-type-resolver', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
         .filter(n => !ts.isImportDeclaration(n))
+        .filter(n => n.modifiers)
+        .filter(n => path.basename(n.getSourceFile().fileName, '.ts') === 'main')
         .forEach((node: ts.TypeNode) => {
             const testFilePath = node.getSourceFile().fileName;
             const testFolder = path.basename(path.dirname(node.getSourceFile().fileName));

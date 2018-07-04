@@ -2,7 +2,7 @@ import {IFormatter, BaseType} from './model';
 import {Definition} from './schema';
 import {UnknownTypeException} from './exception';
 
-export class ChainFormatter implements IFormatter {
+export class TypeFormatter implements IFormatter {
     public constructor(
         private formatters: IFormatter[],
     ) {

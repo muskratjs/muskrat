@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 import {values} from 'lodash';
 import {getDecorators} from './utils';
 import {TypeResolver} from './TypeResolver';
-import * as kindResolvers from './resolver';
+import * as kindResolvers from './type-resolver';
 
 export class MetadataGenerator {
     private program: ts.Program;
@@ -22,8 +22,8 @@ export class MetadataGenerator {
         //
         // this.typeResolver = new TypeResolver(this.nodes, this.typeChecker);
         //
-        // for (const resolver of values(kindResolvers)) {
-        //     this.typeResolver.register(resolver);
+        // for (const type-resolver of values(kindResolvers)) {
+        //     this.typeResolver.register(type-resolver);
         // }
     }
 
