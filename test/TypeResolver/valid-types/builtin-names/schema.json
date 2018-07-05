@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "Boo": {
+      "properties": {
+        "bar": {
+          "$ref": "#/definitions/Ext.Arr"
+        }
+      },
+      "required": [
+        "bar"
+      ],
+      "type": "object",
+      "additionalProperties": false
+    },
+    "Ext.Arr": {
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
