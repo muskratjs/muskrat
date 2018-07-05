@@ -13,8 +13,7 @@ export function assertDefined<T>(
 
 export function assertInstanceOf<T>(
     value: any,
-    type: { new(...args: any[]): T },
-    message?: string,
+    type: { new(...args: any[]): T }
 ): T {
     if (!(value instanceof type)) {
         throw new AssertionException(`Value "${value}" should be instanceof "${type.name}"`);
