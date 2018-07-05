@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "definitions": {
+      "MyObject": {
+        "additionalProperties": false,
+        "properties": {
+          "bar": {
+            "type": "string"
+          },
+          "foo": {
+            "enum": [
+              "ok",
+              "fail",
+              "abort"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "foo",
+          "bar"
+        ],
+        "type": "object"
+      }
+    }
+  }
