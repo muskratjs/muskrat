@@ -4,8 +4,10 @@ import * as program from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 import {MetadataGenerator} from './lib/MetadataGenerator';
+import {loadConfig} from './lib/helper';
 
 const pack = require(path.join(process.cwd(), 'package.json'));
+const config = loadConfig();
 
 program
     .version(pack.version)
@@ -15,6 +17,12 @@ program
     .option('-t, --type [optional]', 'spec type')
     .parse(process.argv); // end with parse to parse through the input
 
-// const metadata = new MetadataGenerator('./test/valid-types/app.ts', require(path.join(process.cwd(), 'tsconfig.json')));
+const metadata = new MetadataGenerator(
+    './test/valid-types/app.ts',
+    require(path.join(process.cwd(), 'tsconfig.json'))
+);
 
-// fs.writeFileSync('test.json', JSON.stringify(metadata.getMetadata(), null, '    '));
+fs.writeFileSync(
+    'test.json',
+    JSON.stringify(metadata.getMetadata(config), null, '    ')
+);
