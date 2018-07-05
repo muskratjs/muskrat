@@ -1,18 +1,23 @@
 import * as ts from 'typescript';
-import {values} from 'lodash';
-import {config, getDecorators} from './utils';
+import {getDecorators} from './utils';
 import {TypeResolver} from './TypeResolver';
-import * as kindResolvers from './kind';
+import {createResolver} from './helper';
+import {Context} from './Context';
+import {IConfig} from './model';
 
 export class MetadataGenerator {
     private program: ts.Program;
-    private typeResolver: TypeResolver;
     private nodes: ts.Node[] = [];
-    private readonly typeChecker: ts.TypeChecker;
+    private typeResolver: TypeResolver;
 
+    /**
+     * @param {string} entryFile
+     * @param {ts.CompilerOptions} compilerOptions
+     */
     constructor(entryFile: string, compilerOptions?: ts.CompilerOptions) {
         this.program = ts.createProgram([entryFile], compilerOptions || {});
-        this.typeChecker = this.program.getTypeChecker();
+
+        const typeChecker: ts.TypeChecker = this.program.getTypeChecker();
 
         for (const sourceFile of this.program.getSourceFiles()) {
             ts.forEachChild(sourceFile, (node) => {
@@ -20,14 +25,14 @@ export class MetadataGenerator {
             });
         }
 
-        this.typeResolver = new TypeResolver(this.nodes, this.typeChecker);
-
-        for (const resolver of values(kindResolvers)) {
-            this.typeResolver.register(resolver);
-        }
+        this.typeResolver = createResolver(typeChecker);
     }
 
-    public getMetadata() {
+    /**
+     * @param {IConfig} config
+     * @return {object}
+     */
+    public getMetadata(config: IConfig) {
         return this.nodes
             .filter(c => c.kind === ts.SyntaxKind.ClassDeclaration)
             .filter(controller => this.filterByDecoratorsList(controller, config.decorators.controller).length)
@@ -38,32 +43,32 @@ export class MetadataGenerator {
                     .filter(method => this.filterByDecoratorsList(method, config.decorators.method).length)
                     .map((method: ts.MethodDeclaration) => ({
                         method: method.name.getText(),
-                        ...this.getType(method),
+                        ...this.getSchema(method),
                         params: method.parameters
                             .filter(node => this.filterByDecoratorsList(node, config.decorators.parameter).length)
                             .map((param: ts.ParameterDeclaration) => ({
                                 param: param.name.getText(),
-                                ...this.getType(param)
+                                ...this.getSchema(param)
                             }))
                     }))
             }))
         ;
     }
 
-    private getType(node: any) {
-        let nodeType = node.type;
-
-        if (!nodeType) {
-            const signature = this.typeChecker.getSignatureFromDeclaration(node);
-            const implicitType = this.typeChecker.getReturnTypeOfSignature(signature!);
-
-            nodeType = this.typeChecker.typeToTypeNode(implicitType);
-        }
-
-        return this.typeResolver.resolve(nodeType);
+    /**
+     * @param {ts.Node} node
+     * @return {BaseType}
+     */
+    private getSchema(node: ts.Node) {
+        return this.typeResolver.resolve(node, new Context());
     }
 
-    private filterByDecoratorsList(node: ts.Node, decorators: string[]) {
+    /**
+     * @param {ts.Node} node
+     * @param {object} decorators
+     * @return {any[] | ts.Identifier[]}
+     */
+    private filterByDecoratorsList(node: ts.Node, decorators: object) {
         return getDecorators(
             node,
             identifier => Object.keys(decorators)

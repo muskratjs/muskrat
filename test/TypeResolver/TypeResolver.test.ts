@@ -4,47 +4,46 @@ import * as minimatch from 'minimatch';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import {describe} from 'mocha';
-import {values} from 'lodash';
-import * as kindResolvers from '../../lib/kind';
-import {TypeResolver} from '../../lib/TypeResolver';
+import {SchemaGenerator} from '../../lib/SchemaGenerator';
+import {createFormatter, createResolver} from '../../lib/helper';
 
 const assert = require('chai').assert;
 const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
-const compilerOptions = require(path.join(process.cwd(), 'tsconfig.json'));
-const testFoldersPattern = path.join(process.cwd(), 'test/TypeResolver/resources/*');
+const compilerOptions = require(path.resolve('tsconfig.json'));
+const testFoldersPattern = path.resolve('test/TypeResolver/valid-types/*');
+
 const program = ts.createProgram(
     glob.sync(testFoldersPattern)
         .map((testPath) => path.join(testPath, 'main'))
     ,
     compilerOptions || {}
 );
-const typeChecker = program.getTypeChecker();
 
 program.getSourceFiles()
     .filter((sourceFile) => minimatch(sourceFile.fileName, `${testFoldersPattern}*`))
     .forEach((sourceFile) => {
         ts.forEachChild(sourceFile, (n: ts.TypeNode) => {
-            nodes.push(n);
+            if (n.modifiers && n.modifiers.length && n.modifiers[0].kind === ts.SyntaxKind.ExportKeyword) {
+                nodes.push(n);
+            }
         });
     })
 ;
 
-const typeResolver = new TypeResolver(nodes, typeChecker);
+const typeChecker = program.getTypeChecker();
+const typeResolver = createResolver(typeChecker);
+const typeFormatter = createFormatter();
 
-for (const resolver of values(kindResolvers)) {
-    typeResolver.register(resolver);
-}
-
-// const node = nodes.filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken).shift();
-//
-
-describe('type-resolver', () => {
+describe('Valid Type Resolve', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
+        .filter(n => !ts.isImportDeclaration(n))
+        .filter(n => n.modifiers)
+        .filter(n => path.basename(n.getSourceFile().fileName, '.ts') === 'main')
         .forEach((node: ts.TypeNode) => {
             const testFilePath = node.getSourceFile().fileName;
-            const testFolder = path.basename(path.dirname(node.getSourceFile().fileName))
+            const testFolder = path.basename(path.dirname(node.getSourceFile().fileName));
 
             if (isTested.indexOf(testFilePath) === -1) {
                 isTested.push(testFilePath);
@@ -52,15 +51,20 @@ describe('type-resolver', () => {
                 it(testFolder, () => {
                     const schema = JSON.parse(
                         fs.readFileSync(
-                            path.join(process.cwd(),
-                                'test/TypeResolver/resources',
+                            path.resolve(
+                                'test/TypeResolver/valid-types',
                                 path.basename(testFolder),
                                 'schema.json'
                             )
                         ).toString()
                     );
 
-                    const resolvedSchema = typeResolver.resolve(node);
+                    const schemaGenerator = new SchemaGenerator(
+                        program,
+                        typeResolver,
+                        typeFormatter
+                    );
+                    const resolvedSchema = schemaGenerator.createSchema(node);
 
                     assert.deepEqual(resolvedSchema, schema);
                 });
