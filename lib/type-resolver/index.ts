@@ -2,6 +2,7 @@ export * from './AnyKeywordResolver';
 export * from './ArrayTypeResolver';
 export * from './BooleanKeywordResolver';
 export * from './BooleanLiteralResolver';
+export * from './ClassDeclarationResolver';
 export * from './EnumDeclarationResolver';
 export * from './ExpressionWithTypeArgumentsResolver';
 export * from './IndexedAccessType';
