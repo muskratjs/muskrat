@@ -1,7 +1,12 @@
 {
   "annotations": {
-    "hidden": "hidden",
-    "deprecated": "deprecated"
+    "text": [
+      "title",
+      "description",
+      "format",
+      "pattern"
+    ],
+    "json": []
   },
   "decorators": {
     "controller": {
