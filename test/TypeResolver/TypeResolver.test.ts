@@ -4,21 +4,14 @@ import * as minimatch from 'minimatch';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import {describe} from 'mocha';
-import {values} from 'lodash';
-import * as resolvers from '../../lib/type-resolver';
-import * as formaters from '../../lib/type-formatter';
-import {TypeResolver} from '../../lib/TypeResolver';
-import {TypeFormatter} from '../../lib/TypeFormatter';
-import {CircularReferenceFormatter} from '../../lib/CircularReferenceFormatter';
-import {CircularReferenceResolver} from '../../lib/CircularReferenceResolver';
-import {ExposeResolver} from '../../lib/ExposeResolver';
 import {SchemaGenerator} from '../../lib/SchemaGenerator';
+import {createFormatter, createResolver} from '../../lib/helper';
 
 const assert = require('chai').assert;
 const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
-const compilerOptions = require(path.join(process.cwd(), 'tsconfig.json'));
-const testFoldersPattern = path.join(process.cwd(), 'test/TypeResolver/valid-types/*');
+const compilerOptions = require(path.resolve('tsconfig.json'));
+const testFoldersPattern = path.resolve('test/TypeResolver/valid-types/*');
 
 const program = ts.createProgram(
     glob.sync(testFoldersPattern)
@@ -39,27 +32,8 @@ program.getSourceFiles()
 ;
 
 const typeChecker = program.getTypeChecker();
-const chainResolver = new TypeResolver();
-
-for (const resolver of values(resolvers)) {
-    chainResolver.addResolver(
-        new CircularReferenceResolver(
-            new ExposeResolver(
-                typeChecker,
-                new (resolver as any)(typeChecker, chainResolver),
-                'export'
-            )
-        )
-    );
-}
-
-const chainFormatter = new TypeFormatter([]);
-const circularReferenceFormatter = new CircularReferenceFormatter(chainFormatter);
-
-for (const formatter of values(formaters)) {
-    const f: { new (...args: any[]): any } = formatter;
-    chainFormatter.addFormatter(new f(circularReferenceFormatter));
-}
+const typeResolver = createResolver(typeChecker);
+const typeFormatter = createFormatter();
 
 describe('Valid Type Resolve', () => {
     nodes
@@ -77,7 +51,7 @@ describe('Valid Type Resolve', () => {
                 it(testFolder, () => {
                     const schema = JSON.parse(
                         fs.readFileSync(
-                            path.join(process.cwd(),
+                            path.resolve(
                                 'test/TypeResolver/valid-types',
                                 path.basename(testFolder),
                                 'schema.json'
@@ -87,15 +61,10 @@ describe('Valid Type Resolve', () => {
 
                     const schemaGenerator = new SchemaGenerator(
                         program,
-                        chainResolver,
-                        circularReferenceFormatter
+                        typeResolver,
+                        typeFormatter
                     );
                     const resolvedSchema = schemaGenerator.createSchema(node);
-
-                    fs.writeFileSync(
-                        'dist/' + path.basename(testFolder) + '.json',
-                        JSON.stringify(resolvedSchema, null, '    ')
-                    );
 
                     assert.deepEqual(resolvedSchema, schema);
                 });
