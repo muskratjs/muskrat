@@ -1,3 +1,5 @@
+process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
+
 import * as fs from 'fs';
 import * as path from 'path';
 import * as config from 'config';
