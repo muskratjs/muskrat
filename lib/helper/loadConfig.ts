@@ -1,33 +1,37 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as config from 'config';
+import {IConfig} from '../model';
 
-export function loadConfig() {
-    const configFileNames = [
-        '.muskrat.json',            '.muskrat.json5',               '.muskrat.js',
-        '.muskrat.ts',              '.muskrat.yaml',                '.muskrat.yml',
+let configObj: IConfig = null;
 
-        'muskrat.json',             'muskrat.json5',                'muskrat.js',
-        'muskrat.ts',               'muskrat.yaml',                 'muskrat.yml',
-
-        'muskrat.config.json',      'muskrat.config.json5',         'muskrat.config.js',
-        'muskrat.config.ts',        'muskrat.config.yaml',          'muskrat.config.yml',
-
-        '.muskrat.config.json',     '.muskrat.config.json5',        '.muskrat.config.js',
-        '.muskrat.config.ts',       '.muskrat.config.yaml',         '.muskrat.config.yml',
-    ];
-
+function _loadConfig() {
+    const fileNames = ['.muskrat', '.muskrat.config', 'muskrat', 'muskrat.config'];
+    const extensions = ['json', 'json5', 'js', 'ts', 'yaml', 'yml'];
     const defaultConfig = (config.util as any).parseFile(path.join(__dirname, '../../.muskrat.json'));
 
-    for (const name of configFileNames) {
-        if (fs.existsSync(path.join(process.cwd(), name))) {
+    for (const name of fileNames) {
+        for (const extension of extensions) {
+            const filePath = path.join(process.cwd(), `${name}.${extension}`);
+            if (fs.existsSync(filePath)) {
 
-            return config.util.extendDeep(
-                defaultConfig,
-                (config.util as any).parseFile(path.join(process.cwd(), name))
-            );
+                return config.util.extendDeep(
+                    defaultConfig,
+                    (config.util as any).parseFile(filePath)
+                );
+            }
         }
     }
 
     return defaultConfig;
+}
+
+export function loadConfig(): IConfig {
+    if (configObj) {
+        return configObj;
+    }
+
+    configObj = _loadConfig();
+
+    return configObj;
 }
