@@ -6,7 +6,6 @@ export class AnnotationsReader implements IAnnotationsReader {
     private static textTags: string[] = [
         'title',
         'description',
-
         'format',
         'pattern',
     ];
