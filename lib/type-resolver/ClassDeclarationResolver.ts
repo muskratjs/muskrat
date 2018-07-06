@@ -73,7 +73,7 @@ export class ClassDeclarationResolver extends Resolver {
     }
 
     private getTypeId(node: ts.Node, context: Context): string {
-        const fullName = `interface-${node.getFullStart()}`;
+        const fullName = `class-${node.getFullStart()}`;
         const argumentIds = context.getArguments().map((arg) => arg.getId());
 
         return argumentIds.length ? `${fullName}<${argumentIds.join(',')}>` : fullName;
