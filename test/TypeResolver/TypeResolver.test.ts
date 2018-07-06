@@ -66,6 +66,13 @@ describe('Valid Type Resolve', () => {
                     );
                     const resolvedSchema = schemaGenerator.createSchema(node);
 
+                    if (process.env.DEBUG) {
+                        fs.writeFileSync(
+                            'dist/' + path.basename(testFolder) + '.json',
+                            JSON.stringify(resolvedSchema, null, '    ')
+                        );
+                    }
+
                     assert.deepEqual(resolvedSchema, schema);
                 });
             }
