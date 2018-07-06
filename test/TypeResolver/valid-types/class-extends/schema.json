@@ -2,20 +2,32 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "definitions": {
     "MyObject": {
-      "properties": {
-        "propA": {
-          "type": "number"
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "propB": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "propB"
+          ],
+          "additionalProperties": false
         },
-        "propB": {
-          "type": "number"
+        {
+          "type": "object",
+          "properties": {
+            "propA": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "propA"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [
-        "propA",
-        "propB"
-      ],
-      "additionalProperties": false,
-      "type": "object"
+      ]
     }
   }
 }

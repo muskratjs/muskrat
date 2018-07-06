@@ -36,14 +36,25 @@ export class ClassDeclarationResolver extends Resolver {
     }
 
     private getProperties(node: ts.ClassDeclaration, context: Context): ObjectProperty[] {
-        return node.members
-            .filter(ts.isPropertyDeclaration)
-            .filter((n: ts.PropertyDeclaration) => {
-                return !n.modifiers || n.modifiers.every((modifier) =>
-                    modifier.kind !== ts.SyntaxKind.ProtectedKeyword &&
-                        modifier.kind !== ts.SyntaxKind.PrivateKeyword
-                );
-            })
+        const properties: Array<ts.PropertyDeclaration | ts.ParameterDeclaration> =  node.members
+            .filter((member) => member.kind === ts.SyntaxKind.PropertyDeclaration)
+            .filter((p: ts.PropertyDeclaration) => this.hasPublicModifier(p))
+            .map(p => (p as ts.PropertyDeclaration))
+        ;
+
+        const classConstructor = node.members
+            .find((member) => member.kind === ts.SyntaxKind.Constructor) as ts.ConstructorDeclaration
+        ;
+
+        if (classConstructor && classConstructor.parameters) {
+            const constructorProperties = classConstructor.parameters
+                .filter(this.hasPublicModifier)
+            ;
+
+            properties.push(...constructorProperties);
+        }
+
+        return properties
             .reduce((result: ObjectProperty[], propertyNode) => {
                 const propertyType = assertDefined(propertyNode.type);
                 const propertySymbol = assertDefined(symbolAtNode(propertyNode));
@@ -58,6 +69,13 @@ export class ClassDeclarationResolver extends Resolver {
 
                 return result;
             }, []);
+    }
+
+    private hasPublicModifier(n: ts.PropertyDeclaration | ts.ParameterDeclaration) {
+        return !n.modifiers || n.modifiers.every((modifier) =>
+            modifier.kind !== ts.SyntaxKind.ProtectedKeyword &&
+            modifier.kind !== ts.SyntaxKind.PrivateKeyword
+        );
     }
 
     private getAdditionalProperties(node: ts.ClassDeclaration, context: Context): BaseType | undefined {
