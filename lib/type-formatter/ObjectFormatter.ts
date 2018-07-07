@@ -62,12 +62,33 @@ export class ObjectFormatter implements IFormatter {
             .map((property) => this.prepareObjectProperty(property))
             .filter((property) => property.isRequired())
             .map((property) => property.getName());
+
         const properties = objectProperties
             .map((property) => this.prepareObjectProperty(property))
             .reduce((result: IStringMap<Definition>, property) => ({
                 ...result,
                 [property.getName()]: this.formatter.getDefinition(property.getType()),
-            }), {});
+            }), {})
+        ;
+
+        if (type.getId().indexOf('class') === 0) {
+            for (const key of Object.keys(properties)) {
+                delete (properties as any)[key]['enum'];
+                delete (properties as any)[key]['minItems'];
+                delete (properties as any)[key]['additionalItems'];
+
+                if ((properties as any)[key]['items']) {
+                    const types = (properties as any)[key]['items']
+                        .map((i: any) => i.type)
+                        .filter((value: any, index: any, self: any) => self.indexOf(value) === index)
+                    ;
+
+                    (properties as any)[key]['items'] = {
+                        type: types.length > 1 ? types : types[0]
+                    };
+                }
+            }
+        }
 
         return {
             type: 'object',

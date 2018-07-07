@@ -56,7 +56,7 @@ export class ClassDeclarationResolver extends Resolver {
 
         return properties
             .reduce((result: ObjectProperty[], propertyNode) => {
-                const propertyType = assertDefined(propertyNode.type);
+                const propertyType = propertyNode.type ? propertyNode.type : propertyNode.initializer;
                 const propertySymbol = assertDefined(symbolAtNode(propertyNode));
 
                 const objectProperty = new ObjectProperty(

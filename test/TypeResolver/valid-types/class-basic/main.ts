@@ -4,6 +4,7 @@ export class MyObject {
     age = 10;
     list: [1, 2, 3];
     stringLists: ['foo', 'boo'];
-    nullable: null;
-    undefined: undefined;
+    mixedLists?: ['foo', 'boo', 1];
+    nullable?: null;
+    undefined?: undefined;
 }

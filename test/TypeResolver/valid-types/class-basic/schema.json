@@ -9,11 +9,44 @@
         },
         "name": {
           "type": "string"
+        },
+        "age": {
+          "type": "number"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "stringLists": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mixedLists": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        },
+        "nullable": {
+          "type": "null"
+        },
+        "undefined": {
+          "not": {}
         }
       },
       "required": [
         "export",
-        "name"
+        "name",
+        "age",
+        "list",
+        "stringLists"
       ],
       "additionalProperties": false
     }
