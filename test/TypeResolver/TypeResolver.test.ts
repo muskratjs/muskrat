@@ -38,8 +38,6 @@ const typeFormatter = createFormatter();
 describe('Valid Type Resolve', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
-        .filter(n => !ts.isImportDeclaration(n))
-        .filter(n => n.modifiers)
         .filter(n => path.basename(n.getSourceFile().fileName, '.ts') === 'main')
         .forEach((node: ts.TypeNode) => {
             const testFilePath = node.getSourceFile().fileName;
