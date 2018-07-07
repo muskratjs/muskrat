@@ -1,3 +1,5 @@
+import * as deepmerge from 'deepmerge';
+
 import {
     ObjectType,
     ObjectProperty,
@@ -25,12 +27,15 @@ export class ObjectFormatter implements IFormatter {
             return this.getObjectDefinition(type);
         }
 
-        return {
-            allOf: [
-                this.getObjectDefinition(type),
-                ...type.getBaseTypes().map((baseType) => this.formatter.getDefinition(baseType)),
-            ],
-        };
+        let definition = this.getObjectDefinition(type);
+
+        if (type.getBaseTypes()) {
+            for (const baseType of type.getBaseTypes()) {
+                definition = deepmerge(definition, this.formatter.getDefinition(baseType));
+            }
+        }
+
+        return definition;
     }
 
     public getChildren(type: ObjectType): BaseType[] {
