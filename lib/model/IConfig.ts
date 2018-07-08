@@ -1,16 +1,13 @@
+import {IDecoratorConfig} from './IDecoratorConfig';
+
 export interface IConfig {
     annotations: {
         text: string[];
         json: string[];
     };
     decorators: {
-        controller: {
-            [decorator: string]: {
-                resolver: string,
-                unique: boolean
-            }
-        };
-        method: object;
-        parameter: object;
+        controller: IDecoratorConfig;
+        method: IDecoratorConfig;
+        parameter: IDecoratorConfig;
     };
 }
