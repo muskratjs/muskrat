@@ -17,3 +17,4 @@ export * from './StringType';
 export * from './TupleType';
 export * from './UndefinedType';
 export * from './UnionType';
+export * from './VoidType';

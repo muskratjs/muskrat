@@ -17,3 +17,4 @@ export * from './StringFormatter';
 export * from './TupleFormatter';
 export * from './UndefinedFormatter';
 export * from './UnionFormatter';
+export * from './VoidFormater';
