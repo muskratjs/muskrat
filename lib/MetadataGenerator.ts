@@ -1,20 +1,22 @@
 import * as ts from 'typescript';
 import {getDecorators} from './utils';
-import {TypeResolver} from './TypeResolver';
-import {createResolver} from './helper';
-import {Context} from './Context';
-import {IConfig} from './model';
+import {createFormatter, createResolver} from './helper';
+import {IMetadataGeneratorOptions} from './model';
+import {SchemaGenerator} from './SchemaGenerator';
 
 export class MetadataGenerator {
     private program: ts.Program;
     private nodes: ts.Node[] = [];
-    private typeResolver: TypeResolver;
+    private schemaGenerator: SchemaGenerator;
 
     /**
      * @param {string} entryFile
      * @param {ts.CompilerOptions} compilerOptions
      */
-    constructor(entryFile: string, compilerOptions?: ts.CompilerOptions) {
+    constructor(
+        entryFile: string,
+        compilerOptions?: ts.CompilerOptions
+    ) {
         this.program = ts.createProgram([entryFile], compilerOptions || {});
 
         const typeChecker: ts.TypeChecker = this.program.getTypeChecker();
@@ -25,27 +27,31 @@ export class MetadataGenerator {
             });
         }
 
-        this.typeResolver = createResolver(typeChecker);
+        this.schemaGenerator = new SchemaGenerator(
+            this.program,
+            createResolver(typeChecker),
+            createFormatter()
+        );
     }
 
     /**
-     * @param {IConfig} config
+     * @param {IMetadataGeneratorOptions} options
      * @return {object}
      */
-    public getMetadata(config: IConfig) {
+    public getMetadata(options: IMetadataGeneratorOptions) {
         return this.nodes
             .filter(c => c.kind === ts.SyntaxKind.ClassDeclaration)
-            .filter(controller => this.filterByDecoratorsList(controller, config.decorators.controller).length)
+            .filter(controller => this.filterByDecoratorsList(controller, options.controllerDecorators).length)
             .map((controller: ts.ClassDeclaration) => ({
                 controller: controller.name.getText(),
                 methods: controller.members
                     .filter(m => m.kind === ts.SyntaxKind.MethodDeclaration)
-                    .filter(method => this.filterByDecoratorsList(method, config.decorators.method).length)
+                    .filter(method => this.filterByDecoratorsList(method, options.methodDecorators).length)
                     .map((method: ts.MethodDeclaration) => ({
                         method: method.name.getText(),
                         ...this.getSchema(method),
                         params: method.parameters
-                            .filter(node => this.filterByDecoratorsList(node, config.decorators.parameter).length)
+                            .filter(node => this.filterByDecoratorsList(node, options.parameterDecorators).length)
                             .map((param: ts.ParameterDeclaration) => ({
                                 param: param.name.getText(),
                                 ...this.getSchema(param)
@@ -60,7 +66,9 @@ export class MetadataGenerator {
      * @return {BaseType}
      */
     private getSchema(node: ts.Node) {
-        return this.typeResolver.resolve(node, new Context());
+        return {
+            type: this.schemaGenerator.createSchema(node)
+        };
     }
 
     /**

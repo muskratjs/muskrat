@@ -18,11 +18,15 @@ program
     .parse(process.argv); // end with parse to parse through the input
 
 const metadata = new MetadataGenerator(
-    './test/valid-types/app.ts',
+    './test/MetadataGenerator/index.ts',
     require(path.join(process.cwd(), 'tsconfig.json'))
 );
 
 fs.writeFileSync(
     'test.json',
-    JSON.stringify(metadata.getMetadata(config), null, '    ')
+    JSON.stringify(metadata.getMetadata({
+        controllerDecorators: config.decorators.controller,
+        methodDecorators: config.decorators.method,
+        parameterDecorators: config.decorators.parameter,
+    }), null, '    ')
 );
