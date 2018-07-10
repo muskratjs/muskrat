@@ -16,6 +16,7 @@ export class CircularReferenceResolver implements IResolver {
 
     public resolve(node: ts.Node, context: Context): BaseType {
         const key = this.createCacheKey(node, context);
+
         if (this.circular.has(key)) {
             return this.circular.get(key)!;
         }
