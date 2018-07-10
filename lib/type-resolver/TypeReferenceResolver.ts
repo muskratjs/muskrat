@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import {Context} from '../Context';
-import {ArrayType, BaseType, Resolver} from '../model';
+import {ArrayType, BaseType, Resolver, StringType} from '../model';
 import {assertDefined} from '../utils';
 
 export class TypeReferenceResolver extends Resolver {
@@ -9,7 +9,30 @@ export class TypeReferenceResolver extends Resolver {
     }
 
     public resolve(node: ts.TypeReferenceNode, context: Context): BaseType {
+        if (node.typeName.kind === ts.SyntaxKind.Identifier) {
+            if (node.typeName.text === 'Date') {
+                return new StringType('date');
+            }
+
+            if (node.typeName.text === 'Buffer') {
+                return new StringType('binary');
+            }
+
+            if (node.typeName.text === 'Array' && node.typeArguments && node.typeArguments.length === 1) {
+                return this.resolver.resolve(node.typeArguments[0], context);
+            }
+
+            if (node.typeName.text === 'Promise' && node.typeArguments && node.typeArguments.length === 1) {
+                return this.resolver.resolve(node.typeArguments[0], context);
+            }
+
+            if (node.typeName.text === 'String') {
+                return new StringType();
+            }
+        }
+
         const typeSymbol = assertDefined(this.typeChecker.getSymbolAtLocation(node.typeName));
+
         if (typeSymbol.flags === ts.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
             const declarations = assertDefined(aliasedSymbol.declarations);
