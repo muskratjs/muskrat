@@ -1,0 +1,22 @@
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "prop": {
+          "$ref": "#/definitions/global.Set<string>"
+        }
+      },
+      "required": [
+        "prop"
+      ],
+      "additionalProperties": false
+    },
+    "global.Set<string>": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
