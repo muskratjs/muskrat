@@ -11,13 +11,19 @@ export class SchemaGenerator {
     ) {
     }
 
-    public createSchema(rootNode: ts.Node): Schema {
+    public createSchema(rootNode: ts.Node, $schema = true): Schema {
         const rootType = this.resolver.resolve(rootNode, new Context());
 
-        return {
-            $schema: 'http://json-schema.org/draft-06/schema#',
+        const schema = {
             definitions: this.getRootChildDefinitions(rootType),
+            ...this.getRootTypeDefinition(rootType)
         };
+
+        if ($schema) {
+            schema.$schema = 'http://json-schema.org/draft-06/schema#';
+        }
+
+        return schema;
     }
 
     private getRootChildDefinitions(rootType: BaseType): IStringMap<Definition> {
@@ -27,5 +33,9 @@ export class SchemaGenerator {
                 ...result,
                 [child.getId()]: this.formatter.getDefinition(child.getType()),
             }), {});
+    }
+
+    private getRootTypeDefinition(rootType: BaseType): Definition {
+        return this.formatter.getDefinition(rootType);
     }
 }

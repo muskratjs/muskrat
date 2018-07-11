@@ -66,9 +66,7 @@ export class MetadataGenerator {
      * @return {BaseType}
      */
     private getSchema(node: ts.Node) {
-        return {
-            type: this.schemaGenerator.createSchema(node)
-        };
+        return this.schemaGenerator.createSchema(node, false);
     }
 
     /**
