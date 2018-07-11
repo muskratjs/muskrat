@@ -1,12 +1,13 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-        "Enum": {
-            "type": "number",
-            "enum": [
-                1,
-                2
-            ]
-        }
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Enum",
+  "definitions": {
+    "Enum": {
+      "type": "number",
+      "enum": [
+        1,
+        2
+      ]
     }
+  }
 }

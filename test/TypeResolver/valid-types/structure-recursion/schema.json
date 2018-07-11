@@ -1,46 +1,47 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-        "MyObject": {
-            "type": "object",
-            "properties": {
-                "sub": {
-                    "type": "object",
-                    "properties": {
-                        "propA": {
-                            "type": "number"
-                        },
-                        "propB": {
-                            "$ref": "#/definitions/interface-0"
-                        }
-                    },
-                    "required": [
-                        "propA",
-                        "propB"
-                    ],
-                    "additionalProperties": false
-                }
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/MyObject",
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "sub": {
+          "type": "object",
+          "properties": {
+            "propA": {
+              "type": "number"
             },
-            "required": [
-                "sub"
-            ],
-            "additionalProperties": false
-        },
-        "interface-0": {
-            "type": "object",
-            "properties": {
-                "propA": {
-                    "type": "number"
-                },
-                "propB": {
-                    "$ref": "#/definitions/interface-0"
-                }
-            },
-            "required": [
-                "propA",
-                "propB"
-            ],
-            "additionalProperties": false
+            "propB": {
+              "$ref": "#/definitions/interface-0"
+            }
+          },
+          "required": [
+            "propA",
+            "propB"
+          ],
+          "additionalProperties": false
         }
+      },
+      "required": [
+        "sub"
+      ],
+      "additionalProperties": false
+    },
+    "interface-0": {
+      "type": "object",
+      "properties": {
+        "propA": {
+          "type": "number"
+        },
+        "propB": {
+          "$ref": "#/definitions/interface-0"
+        }
+      },
+      "required": [
+        "propA",
+        "propB"
+      ],
+      "additionalProperties": false
     }
+  }
 }

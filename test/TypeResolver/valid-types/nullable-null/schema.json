@@ -1,21 +1,22 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-        "MyObject": {
-            "additionalProperties": false,
-            "properties": {
-                "optional": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/MyObject"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                }
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/MyObject",
+  "definitions": {
+    "MyObject": {
+      "additionalProperties": false,
+      "properties": {
+        "optional": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MyObject"
             },
-            "type": "object"
+            {
+              "type": "null"
+            }
+          ]
         }
+      },
+      "type": "object"
     }
+  }
 }

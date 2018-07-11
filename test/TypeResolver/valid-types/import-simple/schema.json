@@ -1,29 +1,30 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-        "MyObject": {
-            "type": "object",
-            "properties": {
-                "field": {
-                    "$ref": "#/definitions/MySubObject"
-                }
-            },
-            "required": [
-                "field"
-            ],
-            "additionalProperties": false
-        },
-        "MySubObject": {
-            "type": "object",
-            "properties": {
-                "value": {
-                    "type": "number"
-                }
-            },
-            "required": [
-                "value"
-            ],
-            "additionalProperties": false
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/MyObject",
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/MySubObject"
         }
+      },
+      "required": [
+        "field"
+      ],
+      "additionalProperties": false
+    },
+    "MySubObject": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
     }
+  }
 }

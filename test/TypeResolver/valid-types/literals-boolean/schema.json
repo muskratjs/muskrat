@@ -1,33 +1,48 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-      "MyObject": {
-        "additionalProperties": false,
-        "properties": {
-          "a": {
-            "enum": [true],
-            "type": "boolean"
-          },
-          "b": {
-            "enum": [false],
-            "type": "boolean"
-          },
-          "c": {
-            "enum": [true, false],
-            "type": "boolean"
-          },
-          "d": {
-            "enum": [true, false, null],
-            "type": ["boolean", "null"]
-          }
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/MyObject",
+  "definitions": {
+    "MyObject": {
+      "additionalProperties": false,
+      "properties": {
+        "a": {
+          "enum": [
+            true
+          ],
+          "type": "boolean"
         },
-        "required": [
-          "a",
-          "b",
-          "c",
-          "d"
-        ],
-        "type": "object"
-      }
+        "b": {
+          "enum": [
+            false
+          ],
+          "type": "boolean"
+        },
+        "c": {
+          "enum": [
+            true,
+            false
+          ],
+          "type": "boolean"
+        },
+        "d": {
+          "enum": [
+            true,
+            false,
+            null
+          ],
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "type": "object"
     }
   }
+}
