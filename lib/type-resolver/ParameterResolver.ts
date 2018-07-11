@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import {Context} from '../Context';
-import {NullType, BaseType, Resolver} from '../model';
+import {BaseType, Resolver} from '../model';
 
 export class ParameterResolver extends Resolver {
     public isSupport(node: ts.Node): boolean {
@@ -8,6 +8,6 @@ export class ParameterResolver extends Resolver {
     }
 
     public resolve(node: ts.ParameterDeclaration, context: Context): BaseType {
-        return new NullType();
+        return this.resolver.resolve(node.type, context);
     }
 }
