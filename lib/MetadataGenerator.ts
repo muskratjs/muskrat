@@ -1,7 +1,13 @@
 import * as ts from 'typescript';
 import {getDecorators} from './utils';
 import {createFormatter, createResolver} from './helper';
-import {IMetadataGeneratorOptions} from './model';
+import {
+    IDecoratorConfig,
+    IMetadataClass,
+    IMetadataGeneratorOptions,
+    IMetadataMethod,
+    IMetadataParameter
+} from './model';
 import {SchemaGenerator} from './SchemaGenerator';
 
 export class MetadataGenerator {
@@ -38,27 +44,64 @@ export class MetadataGenerator {
      * @param {IMetadataGeneratorOptions} options
      * @return {object}
      */
-    public getMetadata(options: IMetadataGeneratorOptions) {
+    public generate(options: IMetadataGeneratorOptions): IMetadataClass[] {
         return this.nodes
             .filter(c => c.kind === ts.SyntaxKind.ClassDeclaration)
             .filter(controller => this.filterByDecoratorsList(controller, options.controllerDecorators).length)
             .map((controller: ts.ClassDeclaration) => ({
+                decorators: this.resolveDecorators(
+                    this.filterByDecoratorsList(
+                        controller,
+                        options.controllerDecorators.filter(d => d.type.indexOf('class') > -1)
+                    )
+                ),
                 controller: controller.name.getText(),
                 methods: controller.members
                     .filter(m => m.kind === ts.SyntaxKind.MethodDeclaration)
                     .filter(method => this.filterByDecoratorsList(method, options.methodDecorators).length)
                     .map((method: ts.MethodDeclaration) => ({
+                        decorators: this.resolveDecorators(
+                            this.filterByDecoratorsList(
+                                method,
+                                options.methodDecorators.filter(d => d.type.indexOf('method') > -1)
+                            )
+                        ),
                         method: method.name.getText(),
-                        ...this.getSchema(method),
+                        schema: this.getSchema(method),
                         params: method.parameters
                             .filter(node => this.filterByDecoratorsList(node, options.parameterDecorators).length)
                             .map((param: ts.ParameterDeclaration) => ({
+                                decorators: this.resolveDecorators(
+                                    this.filterByDecoratorsList(
+                                        param,
+                                        options.parameterDecorators.filter(d => d.type.indexOf('parameter') > -1)
+                                    )
+                                ),
                                 param: param.name.getText(),
-                                ...this.getSchema(param)
-                            }))
-                    }))
-            }))
+                                schema: this.getSchema(param),
+                            }) as IMetadataParameter)
+                    }) as IMetadataMethod)
+            }) as IMetadataClass)
         ;
+    }
+
+    private resolveDecorators(decorators: ts.Declaration[]): any {
+        if (!decorators.length) {
+            return {};
+        }
+
+        const resolvedDecorators: {[key: string]: any} = {};
+
+        decorators.map(
+            (d) => {
+                resolvedDecorators[d.getText()] = (d.parent as ts.CallExpression)
+                    .arguments
+                    .map(a => this.getSchema(a))
+                ;
+            }
+        );
+
+        return resolvedDecorators;
     }
 
     /**
@@ -74,10 +117,11 @@ export class MetadataGenerator {
      * @param {object} decorators
      * @return {any[] | ts.Identifier[]}
      */
-    private filterByDecoratorsList(node: ts.Node, decorators: object) {
+    private filterByDecoratorsList(node: ts.Node, decorators: IDecoratorConfig[]) {
         return getDecorators(
             node,
-            identifier => Object.keys(decorators)
+            identifier => decorators
+                .map(d => d.name)
                 .some((m: string) => m === identifier.text)
         );
     }

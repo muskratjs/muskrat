@@ -7,7 +7,7 @@ export class VoidFormater implements IFormatter {
     }
 
     public getDefinition(type: VoidType): Definition {
-        return {type: 'any'};
+        return {};
     }
 
     public getChildren(type: VoidType): BaseType[] {

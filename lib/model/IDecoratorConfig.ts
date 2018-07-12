@@ -1,6 +1,6 @@
+export type DecoratorType = 'class' | 'method' | 'parameter' | 'response' | 'endpoint';
+
 export interface IDecoratorConfig {
-    [decorator: string]: {
-        resolver: string,
-        unique: boolean
-    };
+    name: string;
+    type: DecoratorType[];
 }

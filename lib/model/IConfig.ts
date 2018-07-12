@@ -6,8 +6,8 @@ export interface IConfig {
         json: string[];
     };
     decorators: {
-        controller: IDecoratorConfig;
-        method: IDecoratorConfig;
-        parameter: IDecoratorConfig;
+        controller: IDecoratorConfig[];
+        method: IDecoratorConfig[];
+        parameter: IDecoratorConfig[];
     };
 }

@@ -10,7 +10,7 @@ let configObj: IConfig = null;
 function _loadConfig() {
     const fileNames = ['.muskrat', '.muskrat.config', 'muskrat', 'muskrat.config'];
     const extensions = ['json', 'json5', 'js', 'ts', 'yaml', 'yml'];
-    const defaultConfig = (config.util as any).parseFile(path.join(__dirname, '../../.muskrat.json'));
+    const defaultConfig = (config.util as any).parseFile(path.join(__dirname, '../../.muskrat.yml'));
 
     for (const name of fileNames) {
         for (const extension of extensions) {
