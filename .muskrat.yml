@@ -1,0 +1,63 @@
+annotations:
+  text:
+  - title
+  - description
+  - format
+  - pattern
+  json: []
+decorators:
+  controller:
+    Controller:
+      type: constructor
+      resolver: ./dist/lib/decorator-resolver/ControllerDecoratorResolver.js
+    JsonController:
+      type: constructor
+      resolver: ./dist/lib/decorator-resolver/ControllerDecoratorResolver.js
+  method:
+    Get:
+      type: method
+    Post:
+      type: method
+    Put:
+      type: method
+    Patch:
+      type: method
+    Delete:
+      type: method
+    Head:
+      type: method
+    HttpCode:
+      type: response
+    OnUndefined:
+      type: response
+    OnNull:
+      type: response
+    Header:
+      type: response
+    ContentType:
+      type: response
+    Redirect:
+      type: response
+  parameter:
+    Param:
+      type: property
+    Params:
+      type: property
+    QueryParam:
+      type: property
+    QueryParams:
+      type: property
+    HeaderParam:
+      type: property
+    HeaderParams:
+      type: property
+    CookieParam:
+      type: property
+    Body:
+      type: property
+    BodyParam:
+      type: property
+    UploadedFiles:
+      type: property
+    UploadedFile:
+      type: property
