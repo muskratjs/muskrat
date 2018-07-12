@@ -7,57 +7,118 @@ annotations:
   json: []
 decorators:
   controller:
-    Controller:
-      type: constructor
+    - name: Controller
+      type:
+        - class
       resolver: ./dist/lib/decorator-resolver/ControllerDecoratorResolver.js
-    JsonController:
-      type: constructor
+
+    - name: JsonController
+      type:
+        - class
       resolver: ./dist/lib/decorator-resolver/ControllerDecoratorResolver.js
+
   method:
-    Get:
-      type: method
-    Post:
-      type: method
-    Put:
-      type: method
-    Patch:
-      type: method
-    Delete:
-      type: method
-    Head:
-      type: method
-    HttpCode:
-      type: response
-    OnUndefined:
-      type: response
-    OnNull:
-      type: response
-    Header:
-      type: response
-    ContentType:
-      type: response
-    Redirect:
-      type: response
+    - name: Get
+      type:
+        - endpoin
+        - method
+
+    - name: Post
+      type:
+        - endpoin
+        - method
+
+    - name: Put
+      type:
+        - endpoin
+        - method
+
+    - name: Patch
+      type:
+        - endpoin
+        - method
+
+    - name: Delete
+      type:
+        - endpoin
+        - method
+
+    - name: Head
+      type:
+        - endpoin
+        - method
+
+    - name: HttpCode
+      type:
+        - method
+        - response
+
+    - name: OnUndefined
+      type:
+        - method
+        - response
+
+    - name: OnNull
+      type:
+        - method
+        - response
+
+    - name: Header
+      type:
+        - method
+        - response
+
+    - name: ContentType
+      type:
+        - method
+        - response
+
+    - name: Redirect
+      type:
+        - method
+        - response
+
   parameter:
-    Param:
-      type: property
-    Params:
-      type: property
-    QueryParam:
-      type: property
-    QueryParams:
-      type: property
-    HeaderParam:
-      type: property
-    HeaderParams:
-      type: property
-    CookieParam:
-      type: property
-    Body:
-      type: property
-    BodyParam:
-      type: property
-    UploadedFiles:
-      type: property
-    UploadedFile:
-      type: property
+    - name: Param
+      type:
+        - parameter
+
+    - name: Params
+      type:
+        - parameter
+
+    - name: QueryParam
+      type:
+        - parameter
+
+    - name: QueryParams
+      type:
+        - parameter
+
+    - name: HeaderParam
+      type:
+        - parameter
+
+    - name: HeaderParams
+      type:
+        - parameter
+
+    - name: CookieParam
+      type:
+        - parameter
+
+    - name: Body
+      type:
+        - parameter
+
+    - name: BodyParam
+      type:
+        - parameter
+
+    - name: UploadedFiles
+      type:
+        - parameter
+
+    - name: UploadedFile
+      type:
+        - parameter
