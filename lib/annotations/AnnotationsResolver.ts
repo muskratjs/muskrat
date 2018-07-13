@@ -4,18 +4,24 @@ import {BaseType, AnnotatedType, IResolver, IAnnotationsReader} from '../model';
 
 export class AnnotationsResolver {
     public constructor(
-        private childResolver: IResolver,
+        private resolver: IResolver,
         private annotationsReader: IAnnotationsReader,
     ) {
     }
 
     public isSupport(node: ts.Node): boolean {
-        return this.childResolver.isSupport(node);
+        return this.resolver.isSupport(node);
     }
 
     public resolve(node: ts.Node, context: Context): BaseType {
-        const baseType = this.childResolver.resolve(node, context);
+        const baseType = this.resolver.resolve(node, context);
         const annotations = this.annotationsReader.getAnnotations(this.getAnnotatedNode(node));
+
+        console.log('-------------------------------------------------------------');
+        console.log(this.getAnnotatedNode(node).getFullText());
+        console.log('\n\n\n\n');
+        console.log(node.getFullText());
+        console.log('-------------------------------------------------------------');
 
         return !annotations ? baseType : new AnnotatedType(baseType, annotations);
     }

@@ -2,13 +2,12 @@ import * as ts from 'typescript';
 import {getDecorators} from './utils';
 import {createFormatter, createResolver} from './helper';
 import {
-    IDecoratorConfig,
     IMetadataClass,
-    IMetadataGeneratorOptions,
     IMetadataMethod,
     IMetadataParameter
 } from './model';
 import {SchemaGenerator} from './SchemaGenerator';
+import {Schema} from './schema';
 
 export class MetadataGenerator {
     private program: ts.Program;
@@ -41,43 +40,26 @@ export class MetadataGenerator {
     }
 
     /**
-     * @param {IMetadataGeneratorOptions} options
-     * @return {object}
+     * @param {string[]} entryDecorators
+     * @return {IMetadataClass}
      */
-    public generate(options: IMetadataGeneratorOptions): IMetadataClass[] {
+    public generate(entryDecorators: string[]): IMetadataClass[] {
         return this.nodes
             .filter(c => c.kind === ts.SyntaxKind.ClassDeclaration)
-            .filter(controller => this.filterByDecoratorsList(controller, options.controllerDecorators).length)
+            .filter(controller => this.filterByDecoratorsList(controller, entryDecorators).length)
             .map((controller: ts.ClassDeclaration) => ({
-                decorators: this.resolveDecorators(
-                    this.filterByDecoratorsList(
-                        controller,
-                        options.controllerDecorators.filter(d => d.type.indexOf('class') > -1)
-                    )
-                ),
                 controller: controller.name.getText(),
+                decorators: this.resolveDecorators(controller.decorators),
                 methods: controller.members
                     .filter(m => m.kind === ts.SyntaxKind.MethodDeclaration)
-                    .filter(method => this.filterByDecoratorsList(method, options.methodDecorators).length)
                     .map((method: ts.MethodDeclaration) => ({
-                        decorators: this.resolveDecorators(
-                            this.filterByDecoratorsList(
-                                method,
-                                options.methodDecorators.filter(d => d.type.indexOf('method') > -1)
-                            )
-                        ),
                         method: method.name.getText(),
+                        decorators: this.resolveDecorators(method.decorators),
                         schema: this.getSchema(method),
                         params: method.parameters
-                            .filter(node => this.filterByDecoratorsList(node, options.parameterDecorators).length)
                             .map((param: ts.ParameterDeclaration) => ({
-                                decorators: this.resolveDecorators(
-                                    this.filterByDecoratorsList(
-                                        param,
-                                        options.parameterDecorators.filter(d => d.type.indexOf('parameter') > -1)
-                                    )
-                                ),
                                 param: param.name.getText(),
+                                decorators: this.resolveDecorators(param.decorators),
                                 schema: this.getSchema(param),
                             }) as IMetadataParameter)
                     }) as IMetadataMethod)
@@ -85,21 +67,28 @@ export class MetadataGenerator {
         ;
     }
 
-    private resolveDecorators(decorators: ts.Declaration[]): any {
-        if (!decorators.length) {
+    /**
+     * @param {ts.NodeArray<ts.Decorator>} decorators
+     * @return {[p: string]: Schema}
+     */
+    private resolveDecorators(decorators?: ts.NodeArray<ts.Decorator>): {[decorator: string]: Schema} {
+        if (!decorators || !decorators.length) {
             return {};
         }
 
         const resolvedDecorators: {[key: string]: any} = {};
 
-        decorators.map(
-            (d) => {
-                resolvedDecorators[d.getText()] = (d.parent as ts.CallExpression)
-                    .arguments
-                    .map(a => this.getSchema(a))
-                ;
-            }
-        );
+        decorators
+            .map(d => d.expression as ts.CallExpression)
+            .map(e => e.expression as ts.Identifier)
+            .map((d) => {
+                    resolvedDecorators[d.getText()] = (d.parent as ts.CallExpression)
+                        .arguments
+                        .map(a => this.getSchema(a))
+                    ;
+                }
+            )
+        ;
 
         return resolvedDecorators;
     }
@@ -117,11 +106,10 @@ export class MetadataGenerator {
      * @param {object} decorators
      * @return {any[] | ts.Identifier[]}
      */
-    private filterByDecoratorsList(node: ts.Node, decorators: IDecoratorConfig[]) {
+    private filterByDecoratorsList(node: ts.Node, decorators: string[]) {
         return getDecorators(
             node,
             identifier => decorators
-                .map(d => d.name)
                 .some((m: string) => m === identifier.text)
         );
     }
