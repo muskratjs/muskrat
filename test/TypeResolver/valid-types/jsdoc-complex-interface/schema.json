@@ -1,0 +1,66 @@
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "stringValue": {
+          "type": "string",
+          "title": "String field title",
+          "minLength": 10,
+          "format": "date-time",
+          "pattern": "/^\\d+$/"
+        },
+        "numberValue": {
+          "type": "integer",
+          "description": "This field is of integer type.\nInteger!",
+          "title": "Number field title",
+          "exclusiveMaximum": 10,
+          "multipleOf": 3
+        },
+        "exportString": {
+          "$ref": "#/definitions/MyExportString",
+          "description": "Export field description",
+          "default": {
+            "length": 10
+          }
+        },
+        "privateString": {
+          "$ref": "#/definitions/MyPrivateString",
+          "description": "Export field description",
+          "default": "private"
+        },
+        "numberArray": {
+          "$ref": "#/definitions/MyNonEmptyArray<number>",
+          "title": "Non empty array"
+        }
+      },
+      "required": [
+        "stringValue",
+        "numberValue",
+        "exportString",
+        "privateString",
+        "numberArray"
+      ],
+      "additionalProperties": false,
+      "title": "Some title here",
+      "description": "Some description here"
+    },
+    "MyExportString": {
+      "type": "string",
+      "title": "My export string"
+    },
+    "MyPrivateString": {
+      "type": "string",
+      "title": "My private string"
+    },
+    "MyNonEmptyArray<number>": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 1
+    }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}
