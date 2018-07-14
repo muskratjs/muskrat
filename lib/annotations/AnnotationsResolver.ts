@@ -17,12 +17,6 @@ export class AnnotationsResolver {
         const baseType = this.resolver.resolve(node, context);
         const annotations = this.annotationsReader.getAnnotations(this.getAnnotatedNode(node));
 
-        console.log('-------------------------------------------------------------');
-        console.log(this.getAnnotatedNode(node).getFullText());
-        console.log('\n\n\n\n');
-        console.log(node.getFullText());
-        console.log('-------------------------------------------------------------');
-
         return !annotations ? baseType : new AnnotatedType(baseType, annotations);
     }
 
@@ -30,6 +24,10 @@ export class AnnotationsResolver {
         if (!node.parent) {
             return node;
         } else if (node.parent.kind === ts.SyntaxKind.PropertySignature) {
+            return node.parent;
+        } else if (node.parent.kind === ts.SyntaxKind.PropertyDeclaration) {
+            return node.parent;
+        } else if (node.parent.kind === ts.SyntaxKind.Parameter) {
             return node.parent;
         } else if (node.parent.kind === ts.SyntaxKind.IndexSignature) {
             return node.parent;
