@@ -18,16 +18,8 @@ export class TypeReferenceResolver extends Resolver {
                 return new StringType('binary');
             }
 
-            if (node.typeName.text === 'Array' && node.typeArguments && node.typeArguments.length === 1) {
-                return this.resolver.resolve(node.typeArguments[0], context);
-            }
-
             if (node.typeName.text === 'Promise' && node.typeArguments && node.typeArguments.length === 1) {
                 return this.resolver.resolve(node.typeArguments[0], context);
-            }
-
-            if (node.typeName.text === 'String') {
-                return new StringType();
             }
         }
 
