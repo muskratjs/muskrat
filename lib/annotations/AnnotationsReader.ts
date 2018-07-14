@@ -111,7 +111,7 @@ export class AnnotationsReader implements IAnnotationsReader {
             return undefined;
         }
 
-        return {description: comments.map((comment) => comment.text).join(" ")};
+        return {description: comments.map((comment) => comment.text).join(' ')};
     }
 
     /**
