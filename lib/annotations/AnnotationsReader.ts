@@ -131,7 +131,7 @@ export class AnnotationsReader implements IAnnotationsReader {
             return undefined;
         }
 
-        const jsDocTag = jsDocTags.find((tag) => tag.name === 'type');
+        const jsDocTag = jsDocTags.find((tag) => tag.name === 'schemaType');
 
         if (!jsDocTag || !jsDocTag.text) {
             return undefined;
