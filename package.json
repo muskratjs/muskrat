@@ -4,7 +4,7 @@
   "description": "Api spec generator",
   "main": "dist/index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text-summary mocha --exit",
+    "test": "nyc mocha --exit",
     "build": "rimraf ./dist/ && tsc",
     "lint": "tslint -c tslint.json 'lib/**/*.ts'"
   },
@@ -51,5 +51,12 @@
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
     "typedi": "^0.8.0"
+  },
+  "nyc": {
+    "include": ["**/lib/**"],
+    "reporter": [
+      "text-summary",
+      "html"
+    ]
   }
 }
