@@ -7,11 +7,11 @@ import {describe} from 'mocha';
 import {SchemaGenerator} from '../../lib/SchemaGenerator';
 import {createFormatter, createResolver} from '../../lib/helper';
 
-const assert = require('chai').assert;
+const { assert, expect } = require('chai');
 const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
 const compilerOptions = require(path.resolve('tsconfig.json'));
-const testFoldersPattern = path.resolve('test/TypeResolver/valid-types/*');
+const testFoldersPattern = path.resolve('test/TypeResolver/{valid-types,invalid-data}/*');
 
 const program = ts.createProgram(
     glob.sync(testFoldersPattern)
@@ -38,6 +38,7 @@ const typeFormatter = createFormatter();
 describe('Valid Type Resolve', () => {
     nodes
         .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
+        .filter(n => minimatch(n.getSourceFile().fileName, path.resolve(`test/TypeResolver/valid-types/**`)))
         .filter(n => path.basename(n.getSourceFile().fileName, '.ts') === 'main')
         .forEach((node: ts.TypeNode) => {
             const testFilePath = node.getSourceFile().fileName;
@@ -71,7 +72,34 @@ describe('Valid Type Resolve', () => {
                         );
                     }
 
-                    assert.deepEqual(resolvedSchema, schema);
+                    assert.deepEqual(schema, resolvedSchema);
+                });
+            }
+        });
+});
+
+describe('Invalid Type Resolve', () => {
+    nodes
+        .filter(n => n.kind !== ts.SyntaxKind.EndOfFileToken)
+        .filter(n => minimatch(n.getSourceFile().fileName, path.resolve(`test/TypeResolver/invalid-data/**`)))
+        .filter(n => path.basename(n.getSourceFile().fileName, '.ts') === 'main')
+        .forEach((node: ts.TypeNode) => {
+            const testFilePath = node.getSourceFile().fileName;
+            const testFolder = path.basename(path.dirname(node.getSourceFile().fileName));
+
+            if (isTested.indexOf(testFilePath) === -1) {
+                isTested.push(testFilePath);
+
+                it(testFolder, () => {
+                    const schemaGenerator = new SchemaGenerator(
+                        program,
+                        typeResolver,
+                        typeFormatter
+                    );
+
+                    expect(() => {
+                        schemaGenerator.createSchema(node);
+                    }).to.throw();
                 });
             }
         });
