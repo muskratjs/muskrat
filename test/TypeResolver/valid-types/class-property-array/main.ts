@@ -2,7 +2,7 @@ export class MyObject {
     prop: MyModel[];
 }
 
-interface MyModel {
+export interface MyModel {
     foo: string;
     boo: number;
 }

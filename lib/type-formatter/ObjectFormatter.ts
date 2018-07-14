@@ -82,13 +82,15 @@ export class ObjectFormatter implements IFormatter {
                 delete (properties as any)[key]['minItems'];
                 delete (properties as any)[key]['additionalItems'];
 
-                if ((properties as any)[key]['items']) {
-                    const types = (properties as any)[key]['items']
+                const items = (properties as any)[key].items;
+
+                if (items && Array.isArray(items)) {
+                    const types = items
                         .map((i: any) => i.type)
                         .filter((value: any, index: any, self: any) => self.indexOf(value) === index)
                     ;
 
-                    (properties as any)[key]['items'] = {
+                    (properties as any)[key].items = {
                         type: types.length > 1 ? types : types[0]
                     };
                 }

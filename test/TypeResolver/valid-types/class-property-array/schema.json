@@ -1,1 +1,37 @@
-{}
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "prop": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MyModel"
+          }
+        }
+      },
+      "required": [
+        "prop"
+      ],
+      "additionalProperties": false
+    },
+    "MyModel": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        },
+        "boo": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "foo",
+        "boo"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}
