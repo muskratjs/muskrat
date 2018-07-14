@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import * as doctrine from 'doctrine';
 import {getDecorators} from './utils';
 import {createFormatter, createResolver} from './helper';
 import {
@@ -10,7 +11,8 @@ import {SchemaGenerator} from './SchemaGenerator';
 import {Schema} from './schema';
 
 export class MetadataGenerator {
-    private program: ts.Program;
+    private readonly program: ts.Program;
+    private readonly typeChecker: ts.TypeChecker;
     private nodes: ts.Node[] = [];
     private schemaGenerator: SchemaGenerator;
 
@@ -23,8 +25,7 @@ export class MetadataGenerator {
         compilerOptions?: ts.CompilerOptions
     ) {
         this.program = ts.createProgram([entryFile], compilerOptions || {});
-
-        const typeChecker: ts.TypeChecker = this.program.getTypeChecker();
+        this.typeChecker = this.program.getTypeChecker();
 
         for (const sourceFile of this.program.getSourceFiles()) {
             ts.forEachChild(sourceFile, (node) => {
@@ -34,7 +35,7 @@ export class MetadataGenerator {
 
         this.schemaGenerator = new SchemaGenerator(
             this.program,
-            createResolver(typeChecker),
+            createResolver(this.typeChecker),
             createFormatter()
         );
     }
@@ -48,17 +49,20 @@ export class MetadataGenerator {
             .filter(c => c.kind === ts.SyntaxKind.ClassDeclaration)
             .filter(controller => this.filterByDecoratorsList(controller, entryDecorators).length)
             .map((controller: ts.ClassDeclaration) => ({
+                annotations: this.getJSDocTagNames(controller),
                 controller: controller.name.getText(),
                 decorators: this.resolveDecorators(controller.decorators),
                 methods: controller.members
                     .filter(m => m.kind === ts.SyntaxKind.MethodDeclaration)
                     .map((method: ts.MethodDeclaration) => ({
+                        annotations: this.getJSDocTagNames(method),
                         method: method.name.getText(),
                         decorators: this.resolveDecorators(method.decorators),
                         schema: this.getSchema(method),
                         params: method.parameters
                             .map((param: ts.ParameterDeclaration) => ({
                                 param: param.name.getText(),
+                                annotations: this.getJSDocTagNames(param),
                                 decorators: this.resolveDecorators(param.decorators),
                                 schema: this.getSchema(param),
                             }) as IMetadataParameter)
@@ -112,5 +116,19 @@ export class MetadataGenerator {
             identifier => decorators
                 .some((m: string) => m === identifier.text)
         );
+    }
+
+    /**
+     * @param {ts.Node} node
+     * @return {any}
+     */
+    getJSDocTagNames(node: ts.Node): any {
+        const jsDoc = (node as any).jsDoc && (node as any).jsDoc[0].getText();
+
+        if (!jsDoc) {
+            return {};
+        }
+
+        return doctrine.parse(jsDoc, { unwrap: true });
     }
 }
