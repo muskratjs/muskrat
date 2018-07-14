@@ -1,3 +1,5 @@
+plugins:
+  swagger: muskrat-swagger-rc
 annotations:
   text:
   - title
