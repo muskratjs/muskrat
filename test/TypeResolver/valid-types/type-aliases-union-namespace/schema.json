@@ -1,0 +1,27 @@
+{
+  "definitions": {
+    "MyModel": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "$ref": "#/definitions/Cardinal"
+        }
+      },
+      "required": [
+        "direction"
+      ],
+      "additionalProperties": false
+    },
+    "Cardinal": {
+      "type": "string",
+      "enum": [
+        "north",
+        "south",
+        "east",
+        "west"
+      ]
+    }
+  },
+  "$ref": "#/definitions/MyModel",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}
