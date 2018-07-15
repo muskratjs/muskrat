@@ -18,7 +18,7 @@ program
     .parse(process.argv); // end with parse to parse through the input
 
 const metadataGenerator = new MetadataGenerator(
-    './test/MetadataGenerator/index.ts',
+    './test/MetadataGenerator/microservice/index.ts',
     require(path.join(process.cwd(), 'tsconfig.json'))
 );
 
