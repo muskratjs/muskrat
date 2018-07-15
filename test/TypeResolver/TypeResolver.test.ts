@@ -3,11 +3,11 @@ import * as path from 'path';
 import * as minimatch from 'minimatch';
 import * as fs from 'fs';
 import * as ts from 'typescript';
+import {assert, expect} from 'chai';
 import {describe} from 'mocha';
 import {SchemaGenerator} from '../../lib/SchemaGenerator';
 import {createFormatter, createResolver} from '../../lib/helper';
 
-const { assert, expect } = require('chai');
 const isTested: string[] = [];
 const nodes: ts.TypeNode[] = [];
 const compilerOptions = require(path.resolve('tsconfig.json'));
