@@ -1,0 +1,42 @@
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "number",
+          "description": "Interface comment."
+        },
+        "bar": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "foo",
+        "bar"
+      ],
+      "additionalProperties": false,
+      "$ref": "#/definitions/Base"
+    },
+    "Base": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "type": "number",
+          "description": "Base comment."
+        },
+        "bar": {
+          "type": "number",
+          "description": "Base comment."
+        }
+      },
+      "required": [
+        "foo",
+        "bar"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}
