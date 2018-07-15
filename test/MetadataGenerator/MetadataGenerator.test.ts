@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {describe} from 'mocha';
+import {describe, it} from 'mocha';
 import {assert} from 'chai';
 import {MetadataGenerator} from '../../lib/MetadataGenerator';
 
