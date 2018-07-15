@@ -1,0 +1,50 @@
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "$ref": "#/definitions/D.D"
+    },
+    "D.D": {
+      "type": "object",
+      "properties": {
+        "d": {
+          "$ref": "#/definitions/C.C"
+        }
+      },
+      "required": [
+        "d"
+      ],
+      "additionalProperties": false
+    },
+    "C.C": {
+      "type": "object",
+      "additionalProperties": false,
+      "$ref": "#/definitions/C.CC"
+    },
+    "C.CC": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "$ref": "#/definitions/B.B"
+        }
+      },
+      "required": [
+        "c"
+      ],
+      "additionalProperties": false
+    },
+    "B.B": {
+      "type": "object",
+      "properties": {
+        "b": {}
+      },
+      "required": [
+        "b"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}
