@@ -1,6 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
-  "$ref": "#/definitions/MyObject",
   "definitions": {
     "MyObject": {
       "type": "object",
@@ -15,10 +13,10 @@
       "additionalProperties": false
     },
     "global.Set<string>": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "type": "object",
+      "additionalProperties": false
     }
-  }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
 }

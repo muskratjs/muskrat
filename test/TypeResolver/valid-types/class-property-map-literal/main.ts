@@ -1,4 +1,4 @@
 export class MyObject {
-    prop = new Map();
+    prop = new Map([]);
 }
 

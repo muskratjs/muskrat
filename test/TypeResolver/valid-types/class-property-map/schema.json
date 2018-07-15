@@ -1,1 +1,22 @@
-{}
+{
+  "definitions": {
+    "MyObject": {
+      "type": "object",
+      "properties": {
+        "prop": {
+          "$ref": "#/definitions/global.Map<string,object>"
+        }
+      },
+      "required": [
+        "prop"
+      ],
+      "additionalProperties": false
+    },
+    "global.Map<string,object>": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#"
+}

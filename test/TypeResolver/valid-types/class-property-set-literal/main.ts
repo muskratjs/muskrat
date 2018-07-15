@@ -1,3 +1,3 @@
 export class MyObject {
-    prop = new Set();
+    prop = new Set([]);
 }
