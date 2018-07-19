@@ -8,6 +8,6 @@ export class ObjectKeywordResolver extends Resolver {
     }
 
     public resolve(node: ts.KeywordTypeNode, context: Context): BaseType {
-        return new ObjectType(`object-${node.getFullStart()}`, [], [], new AnyType());
+        return new ObjectType(`object`, [], [], new AnyType());
     }
 }
