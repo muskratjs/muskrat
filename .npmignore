@@ -1,0 +1,10 @@
+.idea
+.git
+.gitignore
+.travis.yml
+.editorconfig
+.npmignore
+yarn.lock
+node_modules
+test
+.nvmrc
