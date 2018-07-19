@@ -66,7 +66,8 @@ export class ObjectFormatter implements IFormatter {
         const required = objectProperties
             .map((property) => this.prepareObjectProperty(property))
             .filter((property) => property.isRequired())
-            .map((property) => property.getName());
+            .map((property) => property.getName())
+        ;
 
         const properties = objectProperties
             .map((property) => this.prepareObjectProperty(property))
@@ -112,11 +113,13 @@ export class ObjectFormatter implements IFormatter {
 
         return additionalProperties instanceof AnyType
             ? {}
-            : {additionalProperties: this.formatter.getDefinition(additionalProperties)};
+            : {additionalProperties: this.formatter.getDefinition(additionalProperties)}
+        ;
     }
 
     private prepareObjectProperty(property: ObjectProperty): ObjectProperty {
         const propType = property.getType();
+
         if (propType instanceof UndefinedType) {
             return new ObjectProperty(property.getName(), new UndefinedType(), false);
         } else if (!(propType instanceof UnionType)) {
@@ -124,6 +127,7 @@ export class ObjectFormatter implements IFormatter {
         }
 
         const requiredTypes = propType.getTypes().filter((it) => !(it instanceof UndefinedType));
+
         if (propType.getTypes().length === requiredTypes.length) {
             return property;
         } else if (requiredTypes.length === 0) {

@@ -20,8 +20,6 @@ export class ReferenceFormatter implements IFormatter {
             return [];
         }
 
-        // this means that the referred interface is private
-        // so we have to expose it in the schema definitions
         return this.formatter.getChildren(new DefinitionType(type.getId(), type.getType()));
     }
 }

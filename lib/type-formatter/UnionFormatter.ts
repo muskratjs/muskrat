@@ -14,18 +14,20 @@ export class UnionFormatter implements IFormatter {
     public getDefinition(type: UnionType): Definition {
         const definitions = type.getTypes().map((item) => this.formatter.getDefinition(item));
 
-        // special case for string literals | string -> string
         let stringType = true;
         let oneNotEnum = false;
+
         for (const def of definitions) {
             if (def.type !== 'string') {
                 stringType = false;
                 break;
             }
+
             if (def.enum === undefined) {
                 oneNotEnum = true;
             }
         }
+
         if (stringType && oneNotEnum) {
             return {
                 type: 'string',
