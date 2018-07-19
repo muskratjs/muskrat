@@ -1,0 +1,73 @@
+{
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "MyObject": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Type1"
+            },
+            {
+              "$ref": "#/definitions/Type2"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "foo": {
+                  "$ref": "#/definitions/Type3"
+                }
+              },
+              "required": [
+                "foo"
+              ],
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
+    "Type1": {
+      "additionalProperties": false,
+      "properties": {
+        "value1": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value1"
+      ],
+      "type": "object"
+    },
+    "Type2": {
+      "additionalProperties": false,
+      "properties": {
+        "value2": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "value2"
+      ],
+      "type": "object"
+    },
+    "Type3": {
+      "additionalProperties": false,
+      "properties": {
+        "value3": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "value3"
+      ],
+      "type": "object"
+    }
+  }
+}
