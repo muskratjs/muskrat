@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import {Annotations, IAnnotationsReader} from '../model/index';
+import {Annotations, IAnnotationsReader} from '../model';
 import {symbolAtNode} from '../utils';
 
 export class AnnotationsReader implements IAnnotationsReader {
@@ -45,32 +45,10 @@ export class AnnotationsReader implements IAnnotationsReader {
      * @return {Annotations | undefined}
      */
     public getAnnotations(node: ts.Node): Annotations | undefined {
-        const symbol = symbolAtNode(node);
-
-        if (!symbol) {
-            return undefined;
-        }
-
-        const jsDocTags = symbol.getJsDocTags();
-
-        if (!jsDocTags || !jsDocTags.length) {
-            return undefined;
-        }
-
-        let annotations = jsDocTags.reduce((result: Annotations, jsDocTag) => {
-            const value = this.parseJsDocTag(jsDocTag);
-
-            if (value !== undefined) {
-                result[jsDocTag.name] = value;
-            }
-
-            return result;
-        }, {});
-
-        annotations = {
+        const annotations: Annotations = {
             ...this.getDescriptionAnnotation(node),
+            ...this.getTagAnnotations(node),
             ...this.getTypeAnnotation(node),
-            ...annotations,
         };
 
         return Object.keys(annotations).length ? annotations : undefined;
@@ -105,13 +83,45 @@ export class AnnotationsReader implements IAnnotationsReader {
             return undefined;
         }
 
-        const comments = symbol.getDocumentationComment(undefined);
+        try {
+            const comments = symbol.getDocumentationComment(undefined);
 
-        if (!comments || !comments.length) {
+            if (!comments || !comments.length) {
+                return undefined;
+            }
+
+            return {description: comments.map((comment) => comment.text).join(' ')};
+        } catch (e) {
+            return undefined;
+        }
+    }
+
+    /**
+     * @param {ts.Node} node
+     * @return {Annotations | undefined}
+     */
+    private getTagAnnotations(node: ts.Node): Annotations | undefined {
+        const symbol = symbolAtNode(node);
+
+        if (!symbol) {
             return undefined;
         }
 
-        return {description: comments.map((comment) => comment.text).join(' ')};
+        const jsDocTags = symbol.getJsDocTags();
+
+        if (!jsDocTags || !jsDocTags.length) {
+            return undefined;
+        }
+
+        return jsDocTags.reduce((result: Annotations, jsDocTag) => {
+            const value = this.parseJsDocTag(jsDocTag);
+
+            if (value !== undefined) {
+                result[jsDocTag.name] = value;
+            }
+
+            return result;
+        }, {});
     }
 
     /**
