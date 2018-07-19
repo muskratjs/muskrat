@@ -1,6 +1,6 @@
 {
   "name": "muskrat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Api spec generator",
   "main": "dist/index.js",
   "scripts": {
@@ -53,7 +53,9 @@
     "typedi": "^0.8.0"
   },
   "nyc": {
-    "include": ["**/lib/**"],
+    "include": [
+      "**/lib/**"
+    ],
     "reporter": [
       "text-summary",
       "html"
