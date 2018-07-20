@@ -2,7 +2,7 @@
   "name": "muskrat",
   "version": "0.0.3",
   "description": "Api spec generator",
-  "main": "dist/index.js",
+  "main": "dist/cli.js",
   "scripts": {
     "test": "nyc mocha --exit",
     "build": "rimraf ./dist/ && tsc",
