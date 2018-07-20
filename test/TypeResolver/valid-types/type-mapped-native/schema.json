@@ -1,0 +1,25 @@
+{
+  "$ref": "#/definitions/MyObject",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "MyObject": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "b": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "c": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    }
+  }
+}
