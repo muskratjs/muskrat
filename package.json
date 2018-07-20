@@ -26,7 +26,6 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/chai-json-schema": "^1.4.3",
-    "@types/commander": "^2.12.2",
     "@types/config": "^0.0.34",
     "@types/cors": "^2.8.4",
     "@types/deepmerge": "^2.1.0",
