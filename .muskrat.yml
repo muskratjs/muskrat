@@ -1,5 +1,5 @@
 plugins:
-  swagger: muskrat-swagger-rc
+  swagger: @muskrat/swagger-routing-controllers
 annotations:
   text:
   - title
