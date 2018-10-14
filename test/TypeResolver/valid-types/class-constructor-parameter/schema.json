@@ -1,0 +1,18 @@
+{
+  "$ref": "#/definitions/User",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+    "User": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  }
+}
